@@ -13,7 +13,6 @@ const AuthForm = (props) => {
             } else {
                 await register(values)
             }
-            console.log(values, "values form");
         } catch (error) {
             console.error("Registration error:", error);
         }

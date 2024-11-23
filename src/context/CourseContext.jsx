@@ -24,7 +24,6 @@ export const CourseProvider = ({ children }) => {
                 const { token, user } = response.data;
                 localStorage.setItem("token", token);
                 setUser(user);
-                // Navigasi berdasarkan role
                 if (user.role === 'admin') {
                     navigate('/admin-dashboard');
                 } else if (user.role === 'user') {
