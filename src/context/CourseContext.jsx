@@ -74,6 +74,10 @@ export const CourseProvider = ({ children }) => {
         }
     }, []);
 
+    useEffect(() => {
+        navigate("/register")
+    }, [])
+
 
     const value = {
         authForm, Button, Form, Input, Select, login, navigate, user, setUser, register,
