@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.icon {
+    font-size: 30px;
+    color: #ff4d4f;
+    margin-bottom: 16px;
+}
