@@ -267,8 +267,9 @@ export const CourseProvider = ({ children }) => {
         setLoading(true)
         setError(null)
         try {
+            const { image, ...restValues } = values;
             const courseData = {
-                ...values,
+                ...restValues,
                 createdBy: user?.id,
                 coverImage: imageUrl
             };
@@ -330,8 +331,9 @@ export const CourseProvider = ({ children }) => {
         setLoading(true)
         setError(null)
         try {
+            const { image, ...restValues } = values;
             const courseData = {
-                ...values,
+                ...restValues,
                 createdBy: user?.id,
                 coverImage: imageUrl
             };
