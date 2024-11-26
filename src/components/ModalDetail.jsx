@@ -26,16 +26,15 @@ const ModalDetail = () => {
             {detailCourse ? (
                 <div className="text-gray-700 space-y-4">
                     {/* Cover Image */}
-                    {/* {detailCourse.coverImage && (
+                    {detailCourse.coverImage && (
                         <div className="mb-4">
                             <Image
                                 src={detailCourse.coverImage}
                                 alt="Course Cover"
                                 className="w-full h-auto border rounded-md"
-                                preview={false}
                             />
                         </div>
-                    )} */}
+                    )}
 
                     {/* Course Title */}
                     <div>
@@ -103,6 +102,7 @@ const ModalDetail = () => {
                                                         number: index + 1,
                                                         title: lesson.title,
                                                         content: lesson.content || 'Tidak ada konten untuk pelajaran ini',
+                                                        mediaUrl: lesson.mediaUrl,
                                                     }))}
                                                     columns={[
                                                         {
@@ -121,10 +121,41 @@ const ModalDetail = () => {
                                                             dataIndex: 'content',
                                                             key: 'content',
                                                         },
+                                                        {
+                                                            title: 'Media',
+                                                            dataIndex: 'mediaUrl',
+                                                            align: "center",
+                                                            key: 'mediaUrl',
+                                                            render: (mediaUrl) => {
+                                                                if (!mediaUrl) return 'Tidak ada media';
+
+                                                                // Cek tipe file dan render sesuai dengan jenisnya
+                                                                const fileExtension = mediaUrl.split('.').pop().toLowerCase();
+                                                                if (fileExtension === 'jpg' || fileExtension === 'jpeg' || fileExtension === 'png' || fileExtension === 'gif') {
+                                                                    // Tampilkan gambar
+                                                                    return <Image src={mediaUrl} alt="Media" style={{ width: '100px', height: 'auto' }} />;
+                                                                } else if (fileExtension === 'mp4' || fileExtension === 'webm' || fileExtension === 'ogg') {
+                                                                    // Tampilkan video
+                                                                    return (
+                                                                        <video width="100" height="auto" controls>
+                                                                            <source src={mediaUrl} type={`video/${fileExtension}`} />
+                                                                            Your browser does not support the video tag.
+                                                                        </video>
+                                                                    );
+                                                                } else if (fileExtension === 'pdf') {
+                                                                    // Tampilkan PDF sebagai link untuk diunduh
+                                                                    return <a href={mediaUrl} target="_blank" rel="noopener noreferrer">Download PDF</a>;
+                                                                } else {
+                                                                    // Tampilkan link untuk tipe media lainnya
+                                                                    return <a href={mediaUrl} target="_blank" rel="noopener noreferrer">Open Media</a>;
+                                                                }
+                                                            },
+                                                        },
                                                     ]}
                                                     pagination={false}
                                                     bordered
                                                 />
+
                                             </div>
                                         ) : (
                                             <Typography.Text type="secondary">
