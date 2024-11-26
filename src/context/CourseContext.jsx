@@ -11,6 +11,7 @@ export const CourseProvider = ({ children }) => {
     const [authForm] = Form.useForm();
     const [token, setToken] = useState(null)
     const [dataCourse, setDataCourse] = useState([])
+    const [dataCourseUser, setDataCourseUser] = useState([])
     const [detailCourse, setDetailCourse] = useState({})
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -194,6 +195,29 @@ export const CourseProvider = ({ children }) => {
         }
     }
 
+    const fetchDataCourseUser = async () => {
+        setLoading(true);
+        setError(null);
+        try {
+            const response = await axios.get(API_URL + `/feature/courses/user/${user?.id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            if (response.data.success) {
+                setDataCourseUser(response.data.data);
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: error.response?.data?.message || error.message,
+            });
+        } finally {
+            setLoading(false);
+        }
+    };
+
     const handleOpenDetailModal = (record) => {
         setIsDetailModal(true);
         fetchDetailCourse(record?.id)
@@ -207,7 +231,8 @@ export const CourseProvider = ({ children }) => {
         authForm, Button, Form, Input, Select, login, navigate, user, setUser, register,
         loading, error, dataCourse, fetchDataCourseAdmin, token, handleApprove, isModalOpen,
         setIsModalOpen, selectedCourse, setSelectedCourse, feedback, setFeedback, handleReject,
-        handleOpenDetailModal, handleModalClose, isDetailModal, setIsDetailModal, detailCourse
+        handleOpenDetailModal, handleModalClose, isDetailModal, setIsDetailModal, detailCourse,
+        fetchDataCourseUser, dataCourseUser
     }
 
 

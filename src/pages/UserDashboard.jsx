@@ -1,72 +1,94 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { Button, Input, Form, Table, message } from 'antd';
+import { useState, useContext, useEffect } from 'react';
+import { Button, Input, Form, Table, message, Select, Tag } from 'antd';
 import Swal from 'sweetalert2';
 import { CourseContext } from '../context/CourseContext';
 import Navbar from '../components/Navbar';
 import Header from '../components/Header';
+import { CheckOutlined, CloseOutlined, EyeOutlined } from '@ant-design/icons';
 
 const UserDashboard = () => {
-  const { user, dataCourse, fetchDataCourseAdmin } = useContext(CourseContext);
-  const [courseDetails, setCourseDetails] = useState({
-    name: '',
-    description: '',
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { fetchDataCourseUser, token, dataCourseUser } = useContext(CourseContext);
+  const [pageSize, setPageSize] = useState(5);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState(null);
+  const [filteredCourses, setFilteredCourses] = useState(dataCourseUser);
 
-  const handleSubmit = async () => {
-    if (!courseDetails.name.trim() || !courseDetails.description.trim()) {
-      return Swal.fire({
-        icon: 'error',
-        title: 'Gagal',
-        text: 'Nama dan deskripsi kursus tidak boleh kosong.',
-      });
+  useEffect(() => {
+    setFilteredCourses(
+      dataCourseUser.filter(course => {
+        const matchesStatus = statusFilter
+          ? course.status === statusFilter
+          : true;
+        const matchesSearch = course.title.toLowerCase().includes(searchTerm.toLowerCase());
+        return matchesStatus && matchesSearch;
+      })
+    );
+  }, [searchTerm, statusFilter, dataCourseUser]);
+
+  useEffect(() => {
+    if (token) {
+      fetchDataCourseUser()
     }
-
-    setIsSubmitting(true);
-
-    try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/courses`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-        body: JSON.stringify(courseDetails),
-      });
-
-      if (response.ok) {
-        Swal.fire({
-          icon: 'success',
-          title: 'Berhasil',
-          text: 'Kursus berhasil dibuat.',
-        });
-        fetchDataCourseAdmin(); // Refresh data setelah menambahkan kursus
-        setCourseDetails({ name: '', description: '' }); // Reset form
-      } else {
-        message.error('Gagal membuat kursus.');
-      }
-    } catch (error) {
-      message.error(error.message);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+  }, [token])
 
   const columns = [
     {
-      title: 'Nama Kursus',
+      title: 'Course Name',
       dataIndex: 'title',
-      key: 'title',
+      key: 'name',
+      render: (text) => (
+        <span className="font-semibold text-gray-700">{text}</span>
+      ),
     },
     {
-      title: 'Deskripsi',
-      dataIndex: 'description',
-      key: 'description',
+      title: 'Category',
+      dataIndex: 'category',
+      key: 'category',
+      render: (text) => (
+        <span className="font-semibold text-gray-700">{text}</span>
+      ),
     },
+
     {
       title: 'Status',
       dataIndex: 'status',
+      align: 'center',
       key: 'status',
+      render: (status) => (
+        <Tag
+          color={status === 'approved' ? 'green' : status === 'pending' ? 'blue' : 'red'}
+          className="capitalize text-xs font-semibold"
+        >
+          {status}
+        </Tag>
+      ),
+    },
+    {
+      title: 'Detail',
+      key: 'detail',
+      align: 'center',
+      render: (_, record) => (
+        <div className="flex justify-center">
+          <Button
+            type="link"
+            icon={<EyeOutlined />}
+            // onClick={() => handleOpenDetailModal(record)}
+            className="text-gray-600"
+          >
+            Detail
+          </Button>
+        </div>
+      ),
+    },
+    {
+      title: 'Action',
+      key: 'action',
+      align: 'center',
+      render: (text, record) => (
+        <div className="flex flex-col sm:flex-row sm:space-x-2 space-y-2 sm:space-y-0 justify-center">
+
+        </div>
+      ),
     },
   ];
 
@@ -75,6 +97,53 @@ const UserDashboard = () => {
       <Navbar />
       <div className='container mx-auto p-10 bg-white shadow-lg rounded-lg max-w-full'>
         <Header type="User" />
+        {/* Filter & Table Section */}
+        <div className="shadow-sm rounded-lg p-4 bg-white">
+          <div className="flex flex-col sm:flex-row items-center mb-4 gap-4 sm:gap-6">
+            <Button
+              type="primary"
+              className="w-full sm:w-auto lg:w-auto"
+              onClick={() => {
+                console.log('Create New Course clicked');
+              }}
+            >
+              Create New Course
+            </Button>
+            <Input
+              placeholder="Search Course Name"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full sm:w-1/3 lg:w-1/4"
+              allowClear
+            />
+            <Select
+              placeholder="Filter by Status"
+              value={statusFilter}
+              onChange={(value) => setStatusFilter(value)}
+              className="w-full sm:w-1/3 lg:w-1/4"
+              allowClear
+            >
+              <Select.Option value="approved">Approved</Select.Option>
+              <Select.Option value="pending">Pending</Select.Option>
+              <Select.Option value="rejected">Rejected</Select.Option>
+            </Select>
+          </div>
+
+          <div className="overflow-x-auto">
+            <Table
+              columns={columns}
+              dataSource={filteredCourses}
+              rowKey="id"
+              className="shadow-md rounded-lg overflow-hidden"
+              pagination={{
+                pageSize: pageSize,
+                showSizeChanger: true,
+                pageSizeOptions: ['5', '10', '20'],
+                onShowSizeChange: (current, size) => setPageSize(size),
+              }}
+            />
+          </div>
+        </div>
       </div>
     </>
 
