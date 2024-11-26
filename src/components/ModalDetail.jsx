@@ -128,7 +128,7 @@ const ModalDetail = () => {
                                             </div>
                                         ) : (
                                             <Typography.Text type="secondary">
-                                                Tidak ada pelajaran dalam unit ini.
+                                                Tidak ada lesson dalam unit ini.
                                             </Typography.Text>
                                         )}
                                     </Panel>
@@ -136,7 +136,7 @@ const ModalDetail = () => {
                             </Collapse>
                         ) : (
                             <Typography.Text type="secondary">
-                                Tidak ada unit untuk kursus ini.
+                                Tidak ada unit untuk course ini.
                             </Typography.Text>
                         )}
                     </div>
