@@ -6,6 +6,7 @@ import Navbar from '../components/Navbar';
 import Header from '../components/Header';
 import { CheckOutlined, CloseOutlined, DeleteOutlined, EditOutlined, EyeOutlined, PlusOutlined } from '@ant-design/icons';
 import CourseModal from '../components/CourseModal';
+import ModalDetail from '../components/ModalDetail';
 
 const UserDashboard = () => {
   const { 
@@ -14,7 +15,9 @@ const UserDashboard = () => {
     dataCourseUser, 
     handleDeleteCourse, 
     setSelectedCourse, 
-    setTypeModal } = useContext(CourseContext);
+    setTypeModal,
+    handleOpenDetailModal
+  } = useContext(CourseContext);
     
   const [pageSize, setPageSize] = useState(5);
   const [searchTerm, setSearchTerm] = useState("");
@@ -98,6 +101,7 @@ const UserDashboard = () => {
          <Button
             type="link"
             icon={<EyeOutlined />}
+            onClick={() => handleOpenDetailModal(record)}
             className="text-gray-600"
             size="small"
           >
@@ -201,6 +205,7 @@ const UserDashboard = () => {
         </div>
       </div>
       <CourseModal visible={isModalVisible} onClose={closeModal} />
+      <ModalDetail />
     </>
 
   );

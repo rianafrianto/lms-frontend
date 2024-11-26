@@ -40,7 +40,7 @@ const ModalDetail = () => {
                     <div>
                         <Typography.Paragraph>Title: {detailCourse.title}</Typography.Paragraph>
                         <Typography.Paragraph>Description: {detailCourse.description}</Typography.Paragraph>
-                        <Typography.Paragraph>Category: {detailCourse.category}</Typography.Paragraph>
+                        <Typography.Paragraph className='capitalize'>Category: {detailCourse.category}</Typography.Paragraph>
                     </div>
 
                     {/* Status and Feedback */}
@@ -57,7 +57,7 @@ const ModalDetail = () => {
                                             : 'blue'
                                 }
                             >
-                                {detailCourse.status || 'Pending'}
+                                {detailCourse.status || '-'}
                             </Tag>
                         </div>
                         {detailCourse.feedback && (
