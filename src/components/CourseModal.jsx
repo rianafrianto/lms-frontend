@@ -98,9 +98,12 @@ const CourseModal = (props) => {
                         rules={[{ required: true, message: "Please select a category" }]}
                     >
                         <Select placeholder="Select a category" allowClear>
-                            <Select.Option value="test category">Test Category</Select.Option>
-                            <Select.Option value="programming">Programming</Select.Option>
-                            <Select.Option value="design">Design</Select.Option>
+                            <Select.Option value="language and lyteracy">Language and Lyteracy</Select.Option>
+                            <Select.Option value="discover of the world">Discover of the world</Select.Option>
+                            <Select.Option value="aesthetics and creative expression">Aesthetics and Creative Expression</Select.Option>
+                            <Select.Option value="numeracy">Numeracy</Select.Option>
+                            <Select.Option value="physical skill development">Physical Skill Development</Select.Option>
+                            <Select.Option value="social and emotional development">Social and Emotional Development</Select.Option>
                         </Select>
                     </Form.Item>
 
