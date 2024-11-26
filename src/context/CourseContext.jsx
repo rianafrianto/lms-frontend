@@ -20,6 +20,7 @@ export const CourseProvider = ({ children }) => {
     const [isDetailModal, setIsDetailModal] = useState(false)
     const [selectedCourse, setSelectedCourse] = useState(null);
     const [feedback, setFeedback] = useState('');
+    const [imageUrl, setImageUrl] = useState(null)
     const navigate = useNavigate()
 
     // login 
@@ -217,7 +218,84 @@ export const CourseProvider = ({ children }) => {
             setLoading(false);
         }
     };
+    
 
+    const uploadFile = async (file) => {
+        if (!file) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Warning',
+                text: 'Please select a file to upload.',
+            });
+            return;
+        }
+    
+        const formData = new FormData();
+        formData.append('coverImage', file);
+    
+        setLoading(true);
+        setError(null);
+    
+        try {
+            const response = await axios.post(`${API_URL}/s3/upload-cover-image`, formData, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            if (response.data?.success) {
+                setImageUrl(response?.data?.fileUrl)
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Cover image uploaded successfully.',
+                });
+            } 
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: error.response?.data?.message || error.message,
+            });
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const submitCourse = async (values) => {
+        setLoading(true)
+        setError(null)
+        try {
+            const courseData = {
+                ...values,
+                createdBy: user?.id,
+                coverImage: imageUrl
+            };
+            const response = await axios.post(API_URL + "/feature/courses", courseData, {
+                headers: {
+                    Authorization: `Bearer ${token}`, 
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (response.data.success) {
+                await fetchDataCourseUser()
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: response.data.message,
+                });
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: error.response?.data?.message || error.message
+            });
+        } finally {
+            setLoading(false);
+        }
+    };
+    
     const handleOpenDetailModal = (record) => {
         setIsDetailModal(true);
         fetchDetailCourse(record?.id)
@@ -232,7 +310,7 @@ export const CourseProvider = ({ children }) => {
         loading, error, dataCourse, fetchDataCourseAdmin, token, handleApprove, isModalOpen,
         setIsModalOpen, selectedCourse, setSelectedCourse, feedback, setFeedback, handleReject,
         handleOpenDetailModal, handleModalClose, isDetailModal, setIsDetailModal, detailCourse,
-        fetchDataCourseUser, dataCourseUser
+        fetchDataCourseUser, dataCourseUser, uploadFile, imageUrl, setImageUrl, submitCourse
     }
 
 

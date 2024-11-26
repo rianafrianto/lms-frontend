@@ -5,6 +5,7 @@ import { CourseContext } from '../context/CourseContext';
 import Navbar from '../components/Navbar';
 import Header from '../components/Header';
 import { CheckOutlined, CloseOutlined, EyeOutlined } from '@ant-design/icons';
+import CourseModal from '../components/CourseModal';
 
 const UserDashboard = () => {
   const { fetchDataCourseUser, token, dataCourseUser } = useContext(CourseContext);
@@ -12,6 +13,9 @@ const UserDashboard = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState(null);
   const [filteredCourses, setFilteredCourses] = useState(dataCourseUser);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const showModal = () => setIsModalVisible(true);
+  const closeModal = () => setIsModalVisible(false);
 
   useEffect(() => {
     setFilteredCourses(
@@ -69,11 +73,11 @@ const UserDashboard = () => {
       align: 'center',
       render: (_, record) => (
         <div className="flex justify-center">
-          <Button
+         <Button
             type="link"
             icon={<EyeOutlined />}
-            // onClick={() => handleOpenDetailModal(record)}
             className="text-gray-600"
+            size="small"
           >
             Detail
           </Button>
@@ -87,6 +91,25 @@ const UserDashboard = () => {
       render: (text, record) => (
         <div className="flex flex-col sm:flex-row sm:space-x-2 space-y-2 sm:space-y-0 justify-center">
 
+          <Button
+            type="primary"
+            icon={<CheckOutlined />}
+            // onClick={() => handleApprove(record.id)}
+            className="mr-2"
+            size="small"
+          >
+            Edit
+          </Button>
+          <Button
+            type="danger"
+            icon={<CloseOutlined />}
+            onClick={() => {
+            }}
+            size="small"
+          >
+            Delete
+          </Button>
+          
         </div>
       ),
     },
@@ -103,9 +126,7 @@ const UserDashboard = () => {
             <Button
               type="primary"
               className="w-full sm:w-auto lg:w-auto"
-              onClick={() => {
-                console.log('Create New Course clicked');
-              }}
+              onClick={showModal}
             >
               Create New Course
             </Button>
@@ -145,6 +166,7 @@ const UserDashboard = () => {
           </div>
         </div>
       </div>
+      <CourseModal visible={isModalVisible} onClose={closeModal} />
     </>
 
   );
