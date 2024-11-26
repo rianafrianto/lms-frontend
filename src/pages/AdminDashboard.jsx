@@ -5,6 +5,7 @@ import Navbar from '../components/Navbar';
 import { CheckOutlined, CloseOutlined, EyeOutlined } from '@ant-design/icons';
 import ModalFeedback from '../components/ModalFeedback';
 import ModalDetail from '../components/ModalDetail';
+import Header from '../components/Header';
 
 const AdminDashboard = () => {
   const {
@@ -135,14 +136,7 @@ const AdminDashboard = () => {
       {/* Wrapper container */}
       <div className="container mx-auto p-10 bg-white shadow-lg rounded-lg max-w-full">
 
-        {/* Gradient header */}
-        <div className="bg-gradient-to-r from-indigo-500 to-blue-600 text-white p-6 shadow-lg rounded-lg mx-auto mb-6 max-w-full">
-          <h1 className="text-3xl font-bold text-center sm:text-4xl">Admin Dashboard</h1>
-          <div className="w-16 h-1 bg-white mx-auto mt-6 mb-4"></div>
-          <p className="text-center text-lg sm:text-xl">
-            Manage the courses submitted by users with ease.
-          </p>
-        </div>
+        <Header type="Admin" />
 
         {/* Filter & Table Section */}
         <div className="shadow-sm rounded-lg p-4 bg-white">
@@ -151,14 +145,14 @@ const AdminDashboard = () => {
               placeholder="Search Course Name"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-               className="w-full sm:w-1/3 lg:w-1/4"
+              className="w-full sm:w-1/3 lg:w-1/4"
               allowClear
             />
             <Select
               placeholder="Filter by Status"
               value={statusFilter}
               onChange={(value) => setStatusFilter(value)}
-               className="w-full sm:w-1/3 lg:w-1/4"
+              className="w-full sm:w-1/3 lg:w-1/4"
               allowClear
             >
               <Select.Option value="approved">Approved</Select.Option>
