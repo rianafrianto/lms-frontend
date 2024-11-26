@@ -45,6 +45,7 @@ const AdminDashboard = () => {
     {
       title: 'Status',
       dataIndex: 'status',
+      align: 'center',
       key: 'status',
       render: (status) => (
         <Tag
