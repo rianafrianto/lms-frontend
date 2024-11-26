@@ -8,7 +8,7 @@ import { CheckOutlined, CloseOutlined, DeleteOutlined, EditOutlined, EyeOutlined
 import CourseModal from '../components/CourseModal';
 
 const UserDashboard = () => {
-  const { fetchDataCourseUser, token, dataCourseUser } = useContext(CourseContext);
+  const { fetchDataCourseUser, token, dataCourseUser, handleDeleteCourse } = useContext(CourseContext);
   const [pageSize, setPageSize] = useState(5);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState(null);
@@ -34,6 +34,21 @@ const UserDashboard = () => {
       fetchDataCourseUser()
     }
   }, [token])
+
+  const handleDeleteClick = (id) => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You won\'t be able to revert this!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        handleDeleteCourse(id);
+      }
+    });
+  };
 
   const columns = [
     {
@@ -111,8 +126,7 @@ const UserDashboard = () => {
           <Button
             type="danger"
             icon={<DeleteOutlined />}
-            onClick={() => {
-            }}
+            onClick={() => handleDeleteClick(record.id)}
             size="small"
           >
             Delete

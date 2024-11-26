@@ -218,7 +218,7 @@ export const CourseProvider = ({ children }) => {
             setLoading(false);
         }
     };
-    
+
 
     const uploadFile = async (file) => {
         if (!file) {
@@ -229,13 +229,13 @@ export const CourseProvider = ({ children }) => {
             });
             return;
         }
-    
+
         const formData = new FormData();
         formData.append('coverImage', file);
-    
+
         setLoading(true);
         setError(null);
-    
+
         try {
             const response = await axios.post(`${API_URL}/s3/upload-cover-image`, formData, {
                 headers: {
@@ -250,7 +250,7 @@ export const CourseProvider = ({ children }) => {
                     title: 'Success',
                     text: 'Cover image uploaded successfully.',
                 });
-            } 
+            }
         } catch (error) {
             Swal.fire({
                 icon: 'error',
@@ -273,7 +273,7 @@ export const CourseProvider = ({ children }) => {
             };
             const response = await axios.post(API_URL + "/feature/courses", courseData, {
                 headers: {
-                    Authorization: `Bearer ${token}`, 
+                    Authorization: `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 }
             });
@@ -295,7 +295,37 @@ export const CourseProvider = ({ children }) => {
             setLoading(false);
         }
     };
-    
+
+    const handleDeleteCourse = async (courseId) => {
+        try {
+          const response = await axios.delete(
+            `${API_URL}/feature/courses/delete/${courseId}`,
+            { 
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+              },
+              data: { deleted_by: user?.id },
+            }
+          );
+          if (response.data.success) {
+            await fetchDataCourseUser();
+            Swal.fire({
+              icon: 'success',
+              title: 'Berhasil',
+              text: 'Course berhasil dihapus!',
+            });
+          }
+        } catch (error) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Course gagal dihapus!',
+          });
+        }
+      };
+      
+
     const handleOpenDetailModal = (record) => {
         setIsDetailModal(true);
         fetchDetailCourse(record?.id)
@@ -310,7 +340,8 @@ export const CourseProvider = ({ children }) => {
         loading, error, dataCourse, fetchDataCourseAdmin, token, handleApprove, isModalOpen,
         setIsModalOpen, selectedCourse, setSelectedCourse, feedback, setFeedback, handleReject,
         handleOpenDetailModal, handleModalClose, isDetailModal, setIsDetailModal, detailCourse,
-        fetchDataCourseUser, dataCourseUser, uploadFile, imageUrl, setImageUrl, submitCourse
+        fetchDataCourseUser, dataCourseUser, uploadFile, imageUrl, setImageUrl, submitCourse,
+        handleDeleteCourse
     }
 
 
