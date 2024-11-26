@@ -112,7 +112,7 @@ const AdminDashboard = () => {
   return (
     <>
       <Navbar />
-      <div className="bg-gradient-to-r from-indigo-500 to-blue-600 text-white p-6 shadow-lg rounded-lg mx-auto max-w-screen-xl w-full mt-6">
+      <div className="bg-gradient-to-r from-indigo-500 to-blue-600 text-white p-6 shadow-lg rounded-lg mx-auto max-w-screen-xl w-full mt-10">
         <h1 className="text-3xl font-bold text-center">Admin Dashboard</h1>
         <div className="w-16 h-1 bg-white mx-auto mt-2 mb-4"></div>
         <p className="text-center text-lg">
