@@ -22,6 +22,7 @@ export const CourseProvider = ({ children }) => {
     const [feedback, setFeedback] = useState('');
     const [imageUrl, setImageUrl] = useState(null)
     const [typeModal, setTypeModal] = useState("Create")
+    const tokenInStorage = localStorage.getItem("token");
     const navigate = useNavigate()
 
     // login 
@@ -73,10 +74,9 @@ export const CourseProvider = ({ children }) => {
 
 
     useEffect(() => {
-        const token = localStorage.getItem("token");
-        if (token) {
-            setToken(token)
-            const userData = JSON.parse(atob(token.split('.')[1])); // Decode payload JWT
+        if (tokenInStorage) {
+            setToken(tokenInStorage)
+            const userData = JSON.parse(atob(tokenInStorage.split('.')[1])); // Decode payload JWT
             setUser(userData);
         }
     }, []);
@@ -117,7 +117,7 @@ export const CourseProvider = ({ children }) => {
                 {
                     headers: {
                         'Content-Type': 'application/json',
-                        Authorization: `Bearer ${token}`,
+                        Authorization: `Bearer ${token || tokenInStorage}`,
                     },
                 }
             );
@@ -152,7 +152,7 @@ export const CourseProvider = ({ children }) => {
                 {
                     headers: {
                         'Content-Type': 'application/json',
-                        Authorization: `Bearer ${token}`,
+                        Authorization: `Bearer ${token || tokenInStorage}`,
                     },
                 }
             );
@@ -180,7 +180,7 @@ export const CourseProvider = ({ children }) => {
         try {
             const response = await axios.get(API_URL + `/feature/courses/detail/${courseId}`, {
                 headers: {
-                    Authorization: `Bearer ${token}`,
+                    Authorization: `Bearer ${token || tokenInStorage}`,
                 },
             });
             if (response.data.success) {
@@ -203,7 +203,7 @@ export const CourseProvider = ({ children }) => {
         try {
             const response = await axios.get(API_URL + `/feature/courses/user/${user?.id}`, {
                 headers: {
-                    Authorization: `Bearer ${token}`,
+                    Authorization: `Bearer ${token || tokenInStorage}`,
                 },
             });
             if (response.data.success) {
@@ -240,7 +240,7 @@ export const CourseProvider = ({ children }) => {
         try {
             const response = await axios.post(`${API_URL}/s3/upload-cover-image`, formData, {
                 headers: {
-                    Authorization: `Bearer ${token}`,
+                    Authorization: `Bearer ${token || tokenInStorage}`,
                     'Content-Type': 'multipart/form-data',
                 },
             });
@@ -274,7 +274,7 @@ export const CourseProvider = ({ children }) => {
             };
             const response = await axios.post(API_URL + "/feature/courses", courseData, {
                 headers: {
-                    Authorization: `Bearer ${token}`,
+                    Authorization: `Bearer ${token || tokenInStorage}`,
                     'Content-Type': 'application/json'
                 }
             });
@@ -304,7 +304,7 @@ export const CourseProvider = ({ children }) => {
             { 
               headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${token || tokenInStorage}`,
               },
               data: { deleted_by: user?.id },
             }
@@ -337,7 +337,7 @@ export const CourseProvider = ({ children }) => {
             };
             const response = await axios.put(API_URL + `/feature/courses/${selectedCourse?.id}`, courseData, {
                 headers: {
-                    Authorization: `Bearer ${token}`,
+                    Authorization: `Bearer ${token || tokenInStorage}`,
                     'Content-Type': 'application/json'
                 }
             });
