@@ -151,14 +151,14 @@ const AdminDashboard = () => {
               placeholder="Search Course Name"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full sm:w-1/3"
+               className="w-full sm:w-1/3 lg:w-1/4"
               allowClear
             />
             <Select
               placeholder="Filter by Status"
               value={statusFilter}
               onChange={(value) => setStatusFilter(value)}
-              className="w-full sm:w-1/3"
+               className="w-full sm:w-1/3 lg:w-1/4"
               allowClear
             >
               <Select.Option value="approved">Approved</Select.Option>
