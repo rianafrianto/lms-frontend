@@ -17,9 +17,9 @@ const AdminDashboard = () => {
     handleOpenDetailModal,
   } = useContext(CourseContext);
 
-  const [searchTerm, setSearchTerm] = useState(""); 
-  const [statusFilter, setStatusFilter] = useState(null); 
-  const [filteredCourses, setFilteredCourses] = useState(dataCourse); 
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState(null);
+  const [filteredCourses, setFilteredCourses] = useState(dataCourse);
   const [pageSize, setPageSize] = useState(5); // Default to 5 items per page
 
   // Update filteredCourses when searchTerm, statusFilter, or dataCourse changes
@@ -96,7 +96,7 @@ const AdminDashboard = () => {
       key: 'action',
       align: 'center',
       render: (text, record) => (
-        <div className="flex justify-center space-x-2">
+        <div className="flex flex-col sm:flex-row sm:space-x-2 space-y-2 sm:space-y-0 justify-center">
           <Button
             type="primary"
             icon={<CheckOutlined />}
@@ -131,49 +131,58 @@ const AdminDashboard = () => {
   return (
     <>
       <Navbar />
-      <div className="bg-gradient-to-r from-indigo-500 to-blue-600 text-white p-6 shadow-lg rounded-lg mx-auto max-w-screen-xl w-full mt-10">
-        <h1 className="text-3xl font-bold text-center">Admin Dashboard</h1>
-        <div className="w-16 h-1 bg-white mx-auto mt-2 mb-4"></div>
-        <p className="text-center text-lg">
-          Manage the courses submitted by user with ease.
-        </p>
-      </div>
 
-      <div className="container mx-auto mt-6 max-w-screen-xl w-full p-4 bg-white shadow-lg rounded-lg">
-        <div className="flex items-center mb-4 gap-4">
-          <Input
-            placeholder="Search Course Name"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-1/4"
-          />
-          <Select
-            placeholder="Filter by Status"
-            value={statusFilter}
-            onChange={(value) => setStatusFilter(value)}
-            className="w-1/4"
-            allowClear
-          >
-            <Select.Option value="approved">Approved</Select.Option>
-            <Select.Option value="pending">Pending</Select.Option>
-            <Select.Option value="rejected">Rejected</Select.Option>
-          </Select>
+      {/* Wrapper container */}
+      <div className="container mx-auto p-10 bg-white shadow-lg rounded-lg max-w-full">
+
+        {/* Gradient header */}
+        <div className="bg-gradient-to-r from-indigo-500 to-blue-600 text-white p-6 shadow-lg rounded-lg mx-auto mb-6 max-w-full">
+          <h1 className="text-3xl font-bold text-center sm:text-4xl">Admin Dashboard</h1>
+          <div className="w-16 h-1 bg-white mx-auto mt-2 mb-4"></div>
+          <p className="text-center text-lg sm:text-xl">
+            Manage the courses submitted by users with ease.
+          </p>
         </div>
 
-        <div className="overflow-x-auto">
-          <Table
-            columns={columns}
-            dataSource={filteredCourses}
-            rowKey="id"
-            className="shadow-md rounded-lg overflow-hidden"
-            pagination={{
-              pageSize: pageSize,
-              showSizeChanger: true,
-              pageSizeOptions: ['5', '10', '20'],
-              onShowSizeChange: (current, size) => setPageSize(size),
-            }}
-          />
+        {/* Filter & Table Section */}
+        <div className="shadow-sm rounded-lg p-4 bg-white">
+          <div className="flex flex-col sm:flex-row items-center mb-4 gap-4 sm:gap-6">
+            <Input
+              placeholder="Search Course Name"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full sm:w-1/3"
+              allowClear
+            />
+            <Select
+              placeholder="Filter by Status"
+              value={statusFilter}
+              onChange={(value) => setStatusFilter(value)}
+              className="w-full sm:w-1/3"
+              allowClear
+            >
+              <Select.Option value="approved">Approved</Select.Option>
+              <Select.Option value="pending">Pending</Select.Option>
+              <Select.Option value="rejected">Rejected</Select.Option>
+            </Select>
+          </div>
+
+          <div className="overflow-x-auto">
+            <Table
+              columns={columns}
+              dataSource={filteredCourses}
+              rowKey="id"
+              className="shadow-md rounded-lg overflow-hidden"
+              pagination={{
+                pageSize: pageSize,
+                showSizeChanger: true,
+                pageSizeOptions: ['5', '10', '20'],
+                onShowSizeChange: (current, size) => setPageSize(size),
+              }}
+            />
+          </div>
         </div>
+
         <ModalFeedback />
         <ModalDetail />
       </div>
