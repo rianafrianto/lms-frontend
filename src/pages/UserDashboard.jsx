@@ -63,7 +63,7 @@ const UserDashboard = () => {
       dataIndex: 'title',
       key: 'name',
       render: (text) => (
-        <span className="font-semibold text-gray-700">{text}</span>
+        <span className="capitalize font-semibold text-gray-700">{text}</span>
       ),
     },
     {
@@ -71,7 +71,7 @@ const UserDashboard = () => {
       dataIndex: 'category',
       key: 'category',
       render: (text) => (
-        <span className="font-semibold text-gray-700">{text}</span>
+        <span className="capitalize font-semibold text-gray-700">{text}</span>
       ),
     },
 
