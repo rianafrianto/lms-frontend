@@ -1,4 +1,4 @@
-import { Modal, Button, Typography, Tag, Collapse, Table } from 'antd';
+import { Modal, Button, Typography, Tag, Collapse, Table, Image } from 'antd';
 import { useContext } from 'react';
 import { CourseContext } from '../context/CourseContext';
 
@@ -25,6 +25,18 @@ const ModalDetail = () => {
         >
             {detailCourse ? (
                 <div className="text-gray-700 space-y-4">
+                    {/* Cover Image */}
+                    {/* {detailCourse.coverImage && (
+                        <div className="mb-4">
+                            <Image
+                                src={detailCourse.coverImage}
+                                alt="Course Cover"
+                                className="w-full h-auto border rounded-md"
+                                preview={false}
+                            />
+                        </div>
+                    )} */}
+
                     {/* Course Title */}
                     <div>
                         <Typography.Paragraph>Title: {detailCourse.title}</Typography.Paragraph>

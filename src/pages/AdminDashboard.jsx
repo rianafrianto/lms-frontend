@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { CourseContext } from '../context/CourseContext';
-import { Table, Button, Modal, Input, Tag } from 'antd';
+import { Table, Button, Input, Tag, Select } from 'antd';
 import Navbar from '../components/Navbar';
 import { CheckOutlined, CloseOutlined, EyeOutlined } from '@ant-design/icons';
 import ModalFeedback from '../components/ModalFeedback';
@@ -16,6 +16,23 @@ const AdminDashboard = () => {
     setSelectedCourse,
     handleOpenDetailModal,
   } = useContext(CourseContext);
+
+  const [searchTerm, setSearchTerm] = useState(""); 
+  const [statusFilter, setStatusFilter] = useState(null); 
+  const [filteredCourses, setFilteredCourses] = useState(dataCourse); 
+
+  // Update filteredCourses when searchTerm, statusFilter, or dataCourse changes
+  useEffect(() => {
+    setFilteredCourses(
+      dataCourse.filter(course => {
+        const matchesStatus = statusFilter
+          ? course.status === statusFilter
+          : true;
+        const matchesSearch = course.title.toLowerCase().includes(searchTerm.toLowerCase());
+        return matchesStatus && matchesSearch;
+      })
+    );
+  }, [searchTerm, statusFilter, dataCourse]);
 
   const columns = [
     {
@@ -122,16 +139,36 @@ const AdminDashboard = () => {
       </div>
 
       <div className="container mx-auto mt-6 max-w-screen-xl w-full p-4 bg-white shadow-lg rounded-lg">
+        <div className="flex items-center mb-4 gap-4">
+          <Input
+            placeholder="Search Course Name"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-1/4"
+          />
+          <Select
+            placeholder="Filter by Status"
+            value={statusFilter}
+            onChange={(value) => setStatusFilter(value)}
+            className="w-1/4"
+            allowClear
+          >
+            <Select.Option value="approved">Approved</Select.Option>
+            <Select.Option value="pending">Pending</Select.Option>
+            <Select.Option value="rejected">Rejected</Select.Option>
+          </Select>
+        </div>
+
         <div className="overflow-x-auto">
           <Table
             columns={columns}
-            dataSource={dataCourse}
+            dataSource={filteredCourses}
             rowKey="id"
             className="shadow-md rounded-lg overflow-hidden"
           />
         </div>
-        <ModalFeedback/>
-        <ModalDetail/>
+        <ModalFeedback />
+        <ModalDetail />
       </div>
     </>
   );
