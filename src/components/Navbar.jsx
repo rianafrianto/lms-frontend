@@ -27,12 +27,12 @@ const Navbar = () => {
         <nav className="flex justify-between items-center p-5 bg-blue-600 text-white shadow-md">
             <div className="flex items-center">
                 {/* Left side: Logo */}
-                <div className="text-xl font-bold cursor-pointer">
+                <div className="text-xl font-bold cursor-pointer ml-5">
                     <span className="text-white">Logo</span>
                 </div>
             </div>
 
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-4 mr-5">
                 {user && (
                     <Dropdown overlay={menu} trigger={['click', 'hover']}>
                         <div className="flex items-center cursor-pointer space-x-2">
