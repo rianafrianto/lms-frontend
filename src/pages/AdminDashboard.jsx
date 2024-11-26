@@ -20,6 +20,7 @@ const AdminDashboard = () => {
   const [searchTerm, setSearchTerm] = useState(""); 
   const [statusFilter, setStatusFilter] = useState(null); 
   const [filteredCourses, setFilteredCourses] = useState(dataCourse); 
+  const [pageSize, setPageSize] = useState(5); // Default to 5 items per page
 
   // Update filteredCourses when searchTerm, statusFilter, or dataCourse changes
   useEffect(() => {
@@ -165,6 +166,12 @@ const AdminDashboard = () => {
             dataSource={filteredCourses}
             rowKey="id"
             className="shadow-md rounded-lg overflow-hidden"
+            pagination={{
+              pageSize: pageSize,
+              showSizeChanger: true,
+              pageSizeOptions: ['5', '10', '20'],
+              onShowSizeChange: (current, size) => setPageSize(size),
+            }}
           />
         </div>
         <ModalFeedback />
