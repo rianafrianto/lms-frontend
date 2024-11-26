@@ -21,6 +21,7 @@ export const CourseProvider = ({ children }) => {
     const [selectedCourse, setSelectedCourse] = useState(null);
     const [feedback, setFeedback] = useState('');
     const [imageUrl, setImageUrl] = useState(null)
+    const [typeModal, setTypeModal] = useState("Create")
     const navigate = useNavigate()
 
     // login 
@@ -324,6 +325,40 @@ export const CourseProvider = ({ children }) => {
           });
         }
       };
+
+      const updateCourse = async (values) => {
+        setLoading(true)
+        setError(null)
+        try {
+            const courseData = {
+                ...values,
+                createdBy: user?.id,
+                coverImage: imageUrl
+            };
+            const response = await axios.put(API_URL + `/feature/courses/${selectedCourse?.id}`, courseData, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (response.data.success) {
+                await fetchDataCourseUser()
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: response.data.message,
+                });
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: error.response?.data?.message || error.message
+            });
+        } finally {
+            setLoading(false);
+        }
+    };
       
 
     const handleOpenDetailModal = (record) => {
@@ -341,7 +376,7 @@ export const CourseProvider = ({ children }) => {
         setIsModalOpen, selectedCourse, setSelectedCourse, feedback, setFeedback, handleReject,
         handleOpenDetailModal, handleModalClose, isDetailModal, setIsDetailModal, detailCourse,
         fetchDataCourseUser, dataCourseUser, uploadFile, imageUrl, setImageUrl, submitCourse,
-        handleDeleteCourse
+        handleDeleteCourse, typeModal, setTypeModal, updateCourse
     }
 
 

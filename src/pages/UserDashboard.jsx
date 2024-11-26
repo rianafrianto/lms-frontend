@@ -8,7 +8,14 @@ import { CheckOutlined, CloseOutlined, DeleteOutlined, EditOutlined, EyeOutlined
 import CourseModal from '../components/CourseModal';
 
 const UserDashboard = () => {
-  const { fetchDataCourseUser, token, dataCourseUser, handleDeleteCourse } = useContext(CourseContext);
+  const { 
+    fetchDataCourseUser, 
+    token, 
+    dataCourseUser, 
+    handleDeleteCourse, 
+    setSelectedCourse, 
+    setTypeModal } = useContext(CourseContext);
+    
   const [pageSize, setPageSize] = useState(5);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState(null);
@@ -117,7 +124,11 @@ const UserDashboard = () => {
           <Button
             type="primary"
             icon={<EditOutlined />}
-            // onClick={() => handleApprove(record.id)}
+            onClick={() => {
+              setTypeModal("Edit")
+              setSelectedCourse(record);
+              setIsModalVisible(true);
+            }}
             className="mr-2"
             size="small"
           >

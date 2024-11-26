@@ -1,27 +1,65 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Modal, Button, Input, Select, Form, Upload, Spin, Image } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
+import { DeleteOutlined, UploadOutlined } from "@ant-design/icons";
 import { CourseContext } from "../context/CourseContext";
 import Swal from "sweetalert2";
 
 const CourseModal = (props) => {
-    const { uploadFile, loading, imageUrl, submitCourse, setImageUrl } = useContext(CourseContext)
+    const {
+        uploadFile,
+        loading,
+        imageUrl,
+        submitCourse,
+        setImageUrl,
+        typeModal,
+        selectedCourse,
+        updateCourse,
+        setTypeModal,
+        setSelectedCourse
+    } = useContext(CourseContext);
+
     const { visible, onClose } = props;
     const [form] = Form.useForm();
 
+    useEffect(() => {
+        // Autofill the form with selectedCourse data when the modal is opened
+        if (selectedCourse) {
+            form.setFieldsValue({
+                title: selectedCourse.title,
+                description: selectedCourse.description,
+                category: selectedCourse.category,
+                image: selectedCourse.coverImage,
+            });
+            setImageUrl(selectedCourse.coverImage);
+        }
+    }, [selectedCourse, form, setImageUrl]);
+
     const handleFormSubmit = async (values) => {
-        await submitCourse(values)
-        form.resetFields()
-        setImageUrl(null)
-        onClose()
+        typeModal === "Create" ? await submitCourse(values) : await updateCourse(values);
+        form.resetFields();
+        setImageUrl(null);
+        onClose();
     };
+
+    const handleClose = () => {
+        if (typeModal === "Edit") {
+            setTypeModal("Create");
+            form.resetFields();
+            setImageUrl(null);
+            setSelectedCourse(null)
+            onClose()
+        } else {
+            onClose();
+        }
+    }
+
 
     return (
         <>
             <Modal
-                title="Create New Course"
+                title={`${typeModal && `${typeModal} Course`}`}
                 visible={visible}
-                onCancel={onClose}
+                onCancel={handleClose}
                 footer={null}
             >
                 <Form
@@ -71,12 +109,10 @@ const CourseModal = (props) => {
                         <Form.Item
                             name="image"
                             label="Cover Image"
-                            rules={[
-                                { required: true, message: "Please upload a cover image" },
-                            ]}
+                            rules={[{ required: true, message: "Please upload a cover image" }]}
                             style={{ width: '100%' }}
                         >
-                            {/* Komponen Upload */}
+                            {/* Upload Component */}
                             <Upload
                                 accept="image/*"
                                 listType="text"
@@ -104,25 +140,41 @@ const CourseModal = (props) => {
                                 </Button>
                             </Upload>
 
-                            {/* Spinner untuk Loading */}
+                            {/* Spinner for Loading */}
                             {loading && <Spin style={{ marginTop: 16 }} />}
 
-                            {/* Pratinjau Gambar */}
+                            {/* Image Preview */}
                             {imageUrl && (
                                 <div style={{ marginTop: 16, textAlign: 'center' }}>
-                                    <Image
-                                        src={imageUrl}
-                                        alt="Uploaded Cover"
-                                        width="100%"
-                                        height="70%"
-                                        style={{ borderRadius: 8 }}
-                                        preview={true}
-                                    />
+                                    <div style={{ position: 'relative', width: '100%' }}>
+                                        {imageUrl && (
+                                            <>
+                                                <Image
+                                                    src={imageUrl}
+                                                    alt="Uploaded Cover"
+                                                    width="100%"
+                                                    height="70%"
+                                                    style={{ borderRadius: 8 }}
+                                                    preview={true}
+                                                />
+                                                <DeleteOutlined
+                                                    onClick={() => setImageUrl(null)}
+                                                    style={{
+                                                        position: 'absolute',
+                                                        top: 10,
+                                                        right: 10,
+                                                        fontSize: '24px',
+                                                        cursor: 'pointer',
+                                                        zIndex: 1,
+                                                    }}
+                                                />
+                                            </>
+                                        )}
+                                    </div>
                                 </div>
                             )}
                         </Form.Item>
                     </div>
-
 
                     {/* Submit Button */}
                     <Form.Item>
