@@ -4,7 +4,7 @@ import Swal from 'sweetalert2';
 import { CourseContext } from '../context/CourseContext';
 import Navbar from '../components/Navbar';
 import Header from '../components/Header';
-import { CheckOutlined, CloseOutlined, EyeOutlined } from '@ant-design/icons';
+import { CheckOutlined, CloseOutlined, DeleteOutlined, EditOutlined, EyeOutlined, PlusOutlined } from '@ant-design/icons';
 import CourseModal from '../components/CourseModal';
 
 const UserDashboard = () => {
@@ -90,10 +90,18 @@ const UserDashboard = () => {
       align: 'center',
       render: (text, record) => (
         <div className="flex flex-col sm:flex-row sm:space-x-2 space-y-2 sm:space-y-0 justify-center">
-
           <Button
             type="primary"
             icon={<CheckOutlined />}
+            // onClick={() => handleApprove(record.id)}
+            className="mr-2"
+            size="small"
+          >
+            Submit
+          </Button>
+          <Button
+            type="primary"
+            icon={<EditOutlined />}
             // onClick={() => handleApprove(record.id)}
             className="mr-2"
             size="small"
@@ -102,7 +110,7 @@ const UserDashboard = () => {
           </Button>
           <Button
             type="danger"
-            icon={<CloseOutlined />}
+            icon={<DeleteOutlined />}
             onClick={() => {
             }}
             size="small"
@@ -127,6 +135,7 @@ const UserDashboard = () => {
               type="primary"
               className="w-full sm:w-auto lg:w-auto"
               onClick={showModal}
+              icon={<PlusOutlined />}
             >
               Create New Course
             </Button>
