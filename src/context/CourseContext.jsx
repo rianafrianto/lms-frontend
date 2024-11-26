@@ -82,11 +82,11 @@ export const CourseProvider = ({ children }) => {
         navigate("/register")
     }, [])
 
-    const fetchDataCourse = async () => {
+    const fetchDataCourseAdmin = async () => {
         setLoading(true);
         setError(null);
         try {
-            const response = await axios.get(API_URL + "/feature/courses", {
+            const response = await axios.get(API_URL + "/feature/courses/admin", {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -123,7 +123,7 @@ export const CourseProvider = ({ children }) => {
                 title: 'Berhasil',
                 text: 'Course berhasil disetujui.',
             });
-            fetchDataCourse();
+            fetchDataCourseAdmin();
         } catch (error) {
             Swal.fire({
                 icon: 'error',
@@ -160,7 +160,7 @@ export const CourseProvider = ({ children }) => {
                 text: 'Course ditolak dan feedback dikirim.',
             });
             setFeedback("")
-            fetchDataCourse();
+            fetchDataCourseAdmin();
             setIsModalOpen(false);
         } catch (error) {
             Swal.fire({
@@ -205,7 +205,7 @@ export const CourseProvider = ({ children }) => {
 
     const value = {
         authForm, Button, Form, Input, Select, login, navigate, user, setUser, register,
-        loading, error, dataCourse, fetchDataCourse, token, handleApprove, isModalOpen,
+        loading, error, dataCourse, fetchDataCourseAdmin, token, handleApprove, isModalOpen,
         setIsModalOpen, selectedCourse, setSelectedCourse, feedback, setFeedback, handleReject,
         handleOpenDetailModal, handleModalClose, isDetailModal, setIsDetailModal, detailCourse
     }

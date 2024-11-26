@@ -9,7 +9,7 @@ import ModalDetail from '../components/ModalDetail';
 const AdminDashboard = () => {
   const {
     dataCourse,
-    fetchDataCourse,
+    fetchDataCourseAdmin,
     setIsModalOpen,
     token,
     handleApprove,
@@ -123,7 +123,7 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     if (token) {
-      fetchDataCourse();
+      fetchDataCourseAdmin();
     }
   }, [token]);
 
