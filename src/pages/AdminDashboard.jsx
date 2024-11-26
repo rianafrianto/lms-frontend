@@ -135,7 +135,7 @@ const AdminDashboard = () => {
         <h1 className="text-3xl font-bold text-center">Admin Dashboard</h1>
         <div className="w-16 h-1 bg-white mx-auto mt-2 mb-4"></div>
         <p className="text-center text-lg">
-          Kelola kursus yang diajukan oleh instruktur dengan mudah.
+          Manage the courses submitted by user with ease.
         </p>
       </div>
 
