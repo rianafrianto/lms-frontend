@@ -6,6 +6,7 @@ import { CheckOutlined, CloseOutlined, EyeOutlined } from '@ant-design/icons';
 import ModalFeedback from '../components/ModalFeedback';
 import ModalDetail from '../components/ModalDetail';
 import Header from '../components/Header';
+import Swal from 'sweetalert2';
 
 const AdminDashboard = () => {
   const {
@@ -35,6 +36,21 @@ const AdminDashboard = () => {
       })
     );
   }, [searchTerm, statusFilter, dataCourse]);
+
+  const handleConfirmation = (id) => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Kindly confirm, do you wish to approve this course?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'Cancel',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        handleApprove(id);
+      }
+    });
+  };
 
   const columns = [
     {
@@ -101,7 +117,7 @@ const AdminDashboard = () => {
           <Button
             type="primary"
             icon={<CheckOutlined />}
-            onClick={() => handleApprove(record.id)}
+            onClick={() => handleConfirmation(record.id)}
             className="mr-2"
             size="small"
           >

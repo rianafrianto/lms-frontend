@@ -79,7 +79,7 @@ export const CourseProvider = ({ children }) => {
             const userData = JSON.parse(atob(tokenInStorage.split('.')[1])); // Decode payload JWT
             setUser(userData);
         }
-    }, []);
+    }, [token]);
 
     useEffect(() => {
         navigate("/register")
@@ -123,8 +123,8 @@ export const CourseProvider = ({ children }) => {
             );
             Swal.fire({
                 icon: 'success',
-                title: 'Berhasil',
-                text: 'Course berhasil disetujui.',
+                title: 'Success',
+                text: response.data.message || 'Course berhasil disetujui.',
             });
             fetchDataCourseAdmin();
         } catch (error) {
