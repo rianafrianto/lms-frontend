@@ -4,7 +4,7 @@ import { CourseContext } from '../context/CourseContext'
 
 const ModalUnit = (props) => {
     const { visible, onClose, id } = props
-    const { submitUnit, fetchDataUnit, updateUnit, typeModal, setTypeModal, selectedUnit, setSelectedUnit } = useContext(CourseContext)
+    const { submitUnit, fetchDataUnit, updateUnit, typeModal, setTypeModal, selectedUnit, setSelectedUnit, loading } = useContext(CourseContext)
     const [form] = Form.useForm();
 
     const handleSubmit = async (values) => {
