@@ -5,11 +5,17 @@ import { Button, Image, Input, Table } from 'antd'
 import { ArrowLeftOutlined, DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
 import { useParams } from 'react-router-dom';
 import { CourseContext } from '../context/CourseContext';
+import ModalLesson from '../components/ModalLesson';
 
 const UserDashboardUnitLesson = () => {
     const { navigate, dataLesson, fetchDataLesson, token } = useContext(CourseContext)
-    const [pageSize, setPageSize] = useState(5);
     const { courseId, id } = useParams();
+
+    const [pageSize, setPageSize] = useState(5);
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [searchTerm, setSearchTerm] = useState('');
+    const showModal = () => setIsModalVisible(true);
+    const closeModal = () => setIsModalVisible(false);
 
     useEffect(() => {
         if (token) {
@@ -111,10 +117,10 @@ const UserDashboardUnitLesson = () => {
                             <Button
                                 type="primary"
                                 className="w-full sm:w-auto lg:w-auto"
-                                // onClick={showModal}
+                                onClick={showModal}
                                 icon={<PlusOutlined />}
                             >
-                                Create Unit
+                                Create New Lesson
                             </Button>
                             <Input
                                 placeholder="Search Lesson Name"
@@ -150,6 +156,7 @@ const UserDashboardUnitLesson = () => {
                     </div>
                 </div>
             </div>
+            <ModalLesson visible={isModalVisible} onClose={closeModal} id={id} />
         </>
     )
 }

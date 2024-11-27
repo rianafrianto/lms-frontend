@@ -25,6 +25,7 @@ export const CourseProvider = ({ children }) => {
     const [typeModal, setTypeModal] = useState("Create")
     const [dataUnit, setDataUnit] = useState([])
     const [dataLesson, setDataLesson] = useState([])
+    const [selectedLesson, setSelectedLesson] = useState(null);
     const tokenInStorage = localStorage.getItem("token");
     const navigate = useNavigate()
 
@@ -522,7 +523,8 @@ export const CourseProvider = ({ children }) => {
         handleOpenDetailModal, handleModalClose, isDetailModal, setIsDetailModal, detailCourse,
         fetchDataCourseUser, dataCourseUser, uploadFile, imageUrl, setImageUrl, submitCourse,
         handleDeleteCourse, typeModal, setTypeModal, updateCourse, fetchDataUnit, dataUnit, setDataUnit,
-        submitUnit, handleDeleteUnit, updateUnit, selectedUnit, setSelectedUnit, dataLesson, fetchDataLesson
+        submitUnit, handleDeleteUnit, updateUnit, selectedUnit, setSelectedUnit, dataLesson, fetchDataLesson,
+        setSelectedLesson, selectedLesson
     }
 
 
