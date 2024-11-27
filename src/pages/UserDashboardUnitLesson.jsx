@@ -69,7 +69,7 @@ const UserDashboardUnitLesson = () => {
             dataIndex: 'content',
             key: 'content',
             render: (text) => (
-                <span className="capitalize font-semibold text-gray-700">{text}</span>
+                <span className="font-semibold text-gray-700">{text}</span>
             ),
         },
         {
