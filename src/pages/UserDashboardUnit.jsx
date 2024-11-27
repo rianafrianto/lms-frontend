@@ -7,6 +7,7 @@ import { ArrowLeftOutlined, DeleteOutlined, EditOutlined, PlusOutlined } from '@
 import { useParams } from 'react-router-dom';
 import ModalUnit from '../components/ModalUnit';
 import Swal from 'sweetalert2';
+
 const UserDashboardUnit = () => {
   const {
     navigate,
@@ -20,6 +21,7 @@ const UserDashboardUnit = () => {
   const { id } = useParams();
   const [pageSize, setPageSize] = useState(5);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
   const showModal = () => setIsModalVisible(true);
   const closeModal = () => setIsModalVisible(false);
 
@@ -27,7 +29,12 @@ const UserDashboardUnit = () => {
     if (token) {
       fetchDataUnit(id)
     }
-  }, [token])
+  }, [token]);
+
+  // Filter the data based on the search term
+  const filteredData = dataUnit.filter(unit =>
+    unit.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const handleDeleteClick = (unitId) => {
     Swal.fire({
@@ -83,10 +90,9 @@ const UserDashboardUnit = () => {
             type="primary"
             icon={<EditOutlined />}
             onClick={() => {
-              setTypeModal("Edit")
+              setTypeModal("Edit");
               setSelectedUnit(record);
               setIsModalVisible(true);
-
             }}
             className="mr-2"
             size="small"
@@ -101,11 +107,11 @@ const UserDashboardUnit = () => {
           >
             Delete
           </Button>
-
         </div>
       ),
     },
   ];
+
   return (
     <>
       <Navbar />
@@ -124,8 +130,8 @@ const UserDashboardUnit = () => {
               </Button>
               <Input
                 placeholder="Search Unit Name"
-                // value={searchTerm}
-                // onChange={(e) => setSearchTerm(e.target.value)}
+                value={searchTerm} 
+                onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full sm:w-auto lg:w-auto"
                 allowClear
               />
@@ -140,11 +146,10 @@ const UserDashboardUnit = () => {
             </Button>
           </div>
 
-
           <div className="overflow-x-auto">
             <Table
               columns={columns}
-              dataSource={dataUnit}
+              dataSource={filteredData}
               rowKey="id"
               className="shadow-md rounded-lg overflow-hidden"
               pagination={{
