@@ -33,6 +33,7 @@ const ModalLesson = (props) => {
             setTypeModal("Create");
             form.resetFields();
             setSelectedLesson(null)
+            setImageUrl(null)
             onClose()
         } else {
             onClose();
