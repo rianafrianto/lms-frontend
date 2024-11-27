@@ -23,6 +23,7 @@ export const CourseProvider = ({ children }) => {
     const [imageUrl, setImageUrl] = useState(null)
     const [typeModal, setTypeModal] = useState("Create")
     const tokenInStorage = localStorage.getItem("token");
+    const [dataUnit, setDataUnit] = useState([])
     const navigate = useNavigate()
 
     // login 
@@ -34,6 +35,7 @@ export const CourseProvider = ({ children }) => {
             if (response.data.success) {
                 const { token, user } = response.data;
                 localStorage.setItem("token", token);
+                localStorage.setItem("user", JSON.stringify(user));
                 setUser(user);
                 if (user.role === 'admin') {
                     navigate('/admin-dashboard');
@@ -81,9 +83,11 @@ export const CourseProvider = ({ children }) => {
         }
     }, [token]);
 
-    useEffect(() => {
-        navigate("/register")
-    }, [])
+    // useEffect(() => {
+    //     if(!token) {
+    //         navigate("/register")
+    //     }
+    // }, [token])
 
     const fetchDataCourseAdmin = async () => {
         setLoading(true);
@@ -361,6 +365,58 @@ export const CourseProvider = ({ children }) => {
             setLoading(false);
         }
     };
+
+    const fetchDataUnit = async (id) => {
+        setLoading(true);
+        setError(null);
+        try {
+            const response = await axios.get(API_URL + `/feature/units/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${token || tokenInStorage}`,
+                },
+            });
+            if (response.data.success) {
+                setDataUnit(response.data.data);
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: error.response?.data?.message || error.message,
+            });
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const submitUnit = async (values, id) => {
+        setLoading(true)
+        setError(null)
+        try {
+          
+            const response = await axios.post(API_URL + `/feature/courses/${id}`,  { title : values?.title }, {
+                headers: {
+                    Authorization: `Bearer ${token || tokenInStorage}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (response.data.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: response.data.message,
+                });
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: error.response?.data?.message || error.message
+            });
+        } finally {
+            setLoading(false);
+        }
+    };
       
 
     const handleOpenDetailModal = (record) => {
@@ -378,7 +434,8 @@ export const CourseProvider = ({ children }) => {
         setIsModalOpen, selectedCourse, setSelectedCourse, feedback, setFeedback, handleReject,
         handleOpenDetailModal, handleModalClose, isDetailModal, setIsDetailModal, detailCourse,
         fetchDataCourseUser, dataCourseUser, uploadFile, imageUrl, setImageUrl, submitCourse,
-        handleDeleteCourse, typeModal, setTypeModal, updateCourse
+        handleDeleteCourse, typeModal, setTypeModal, updateCourse, fetchDataUnit, dataUnit, setDataUnit,
+        submitUnit
     }
 
 

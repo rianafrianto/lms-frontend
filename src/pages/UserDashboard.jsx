@@ -120,7 +120,7 @@ const UserDashboard = () => {
          <Button
             type="primary"
             icon={<PlusOutlined />}
-            onClick={() => navigate("/user-dashboard-unit")}
+            onClick={() => navigate(`/user-dashboard/unit/${record?.id}`)}
             size="small"
           >
             Create Unit
