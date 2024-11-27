@@ -6,10 +6,12 @@ import { CourseContext } from '../context/CourseContext';
 const NotFound = () => {
     const { user, navigate } = useContext(CourseContext)
     const handleGoBack = () => {
-        if (user && user.role === 'admin') {
+        if (user && user.role === "admin") {
             navigate('/admin-dashboard');
-        } else {
+        } else if (user.role === "user") {
             navigate('/user-dashboard');
+        } else {
+            navigate('/login');
         }
     };
 
