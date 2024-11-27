@@ -4,7 +4,7 @@ import Swal from 'sweetalert2';
 import { CourseContext } from '../context/CourseContext';
 import Navbar from '../components/Navbar';
 import Header from '../components/Header';
-import { CheckOutlined, CloseOutlined, DeleteOutlined, EditOutlined, EyeOutlined, PlusOutlined } from '@ant-design/icons';
+import { CheckOutlined, CloseOutlined, DeleteOutlined, EditOutlined, EyeOutlined, PlusOutlined, SearchOutlined } from '@ant-design/icons';
 import CourseModal from '../components/CourseModal';
 import ModalDetail from '../components/ModalDetail';
 
@@ -192,6 +192,7 @@ const UserDashboard = () => {
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full sm:w-1/3 lg:w-1/4"
               allowClear
+              suffix={<SearchOutlined style={{ color: 'rgba(0,0,0,.45)' }} />}
             />
             <Select
               placeholder="Filter by Status"

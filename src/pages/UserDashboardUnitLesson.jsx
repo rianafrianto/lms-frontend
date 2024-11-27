@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import Header from '../components/Header'
 import { Button, Image, Input, Table } from 'antd'
-import { ArrowLeftOutlined, DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined, DeleteOutlined, EditOutlined, PlusOutlined, SearchOutlined  } from '@ant-design/icons';
 import { useParams } from 'react-router-dom';
 import { CourseContext } from '../context/CourseContext';
 import ModalLesson from '../components/ModalLesson';
@@ -160,6 +160,7 @@ const UserDashboardUnitLesson = () => {
                                 onChange={(e) => setSearchTerm(e.target.value)}
                                 className="w-full sm:w-auto lg:w-auto"
                                 allowClear
+                                suffix={<SearchOutlined style={{ color: 'rgba(0,0,0,.45)' }} />}
                             />
                         </div>
                         <Button

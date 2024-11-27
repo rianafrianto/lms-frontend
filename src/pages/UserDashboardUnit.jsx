@@ -3,7 +3,7 @@ import Navbar from '../components/Navbar'
 import Header from '../components/Header'
 import { Input, Button, Table } from 'antd';
 import { CourseContext } from '../context/CourseContext';
-import { ArrowLeftOutlined, DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined, DeleteOutlined, EditOutlined, PlusOutlined, SearchOutlined } from '@ant-design/icons';
 import { useParams } from 'react-router-dom';
 import ModalUnit from '../components/ModalUnit';
 import Swal from 'sweetalert2';
@@ -135,6 +135,7 @@ const UserDashboardUnit = () => {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full sm:w-auto lg:w-auto"
                 allowClear
+                suffix={<SearchOutlined style={{ color: 'rgba(0,0,0,.45)' }} />}
               />
             </div>
             <Button
