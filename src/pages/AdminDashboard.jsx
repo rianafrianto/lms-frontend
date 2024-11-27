@@ -128,6 +128,7 @@ const AdminDashboard = () => {
             onClick={() => handleConfirmation(record.id)}
             className="mr-2"
             size="small"
+            disabled={record?.status === "approved"}
           >
             Setujui
           </Button>
@@ -139,6 +140,7 @@ const AdminDashboard = () => {
               setIsModalOpen(true);
             }}
             size="small"
+            disabled={record?.status === "approved"}
           >
             Tolak
           </Button>

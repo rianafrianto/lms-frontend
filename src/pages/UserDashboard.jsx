@@ -161,6 +161,7 @@ const UserDashboard = () => {
             onClick={() => handleSubmitCourse(record?.id)}
             className="mr-2"
             size="small"
+            disabled={record?.status === "approved"}
           >
             Submit
           </Button>
@@ -174,6 +175,7 @@ const UserDashboard = () => {
             }}
             className="mr-2"
             size="small"
+            disabled={record?.status === "approved"}
           >
             Edit
           </Button>
