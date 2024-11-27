@@ -13,25 +13,25 @@ const ModalFeedback = () => {
     return (
         <>
             <Modal
-                title={<span className="font-bold text-lg">Feedback untuk Menolak Kursus</span>}
+                title={<span className="font-bold text-lg">Feedback untuk Menolak Course</span>}
                 visible={isModalOpen}
                 onCancel={() => setIsModalOpen(false)}
                 footer={[
                     <Button key="cancel" onClick={() => setIsModalOpen(false)}>
-                        Batal
+                        Cancel
                     </Button>,
                     <Button key="submit" type="primary" onClick={handleReject}>
-                        Kirim Feedback
+                        Submit Feedback
                     </Button>,
                 ]}
             >
                 <p className="text-gray-600 mb-2">
-                    Silakan berikan alasan mengapa kursus ini ditolak.
+                    Silakan berikan alasan mengapa course ini ditolak.
                 </p>
                 <Input.TextArea
                     value={feedback}
                     onChange={(e) => setFeedback(e.target.value)}
-                    placeholder="Berikan alasan mengapa kursus ini ditolak"
+                    placeholder="Berikan alasan mengapa course ini ditolak"
                     rows={4}
                     className="border-gray-300"
                 />

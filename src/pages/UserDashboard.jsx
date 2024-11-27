@@ -16,7 +16,8 @@ const UserDashboard = () => {
     handleDeleteCourse, 
     setSelectedCourse, 
     setTypeModal,
-    handleOpenDetailModal
+    handleOpenDetailModal,
+    navigate
   } = useContext(CourseContext);
     
   const [pageSize, setPageSize] = useState(5);
@@ -106,6 +107,23 @@ const UserDashboard = () => {
             size="small"
           >
             Detail
+          </Button>
+        </div>
+      ),
+    },
+    {
+      title: 'Unit',
+      key: 'unit',
+      align: 'center',
+      render: (_, record) => (
+        <div className="flex justify-center">
+         <Button
+            type="primary"
+            icon={<PlusOutlined />}
+            onClick={() => navigate("/user-dashboard-unit")}
+            size="small"
+          >
+            Create Unit
           </Button>
         </div>
       ),
