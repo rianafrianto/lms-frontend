@@ -72,11 +72,12 @@ const UserDashboardUnit = () => {
           <Button
             type="primary"
             icon={<PlusOutlined />}
-            // onClick={() => navigate("/user-dashboard/unit")}
+            onClick={() => navigate(`/user-dashboard/unit/${record?.course_id}/lesson/${record?.id}`)}
             size="small"
           >
             Create Lesson
           </Button>
+
         </div>
       ),
     },
@@ -130,7 +131,7 @@ const UserDashboardUnit = () => {
               </Button>
               <Input
                 placeholder="Search Unit Name"
-                value={searchTerm} 
+                value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full sm:w-auto lg:w-auto"
                 allowClear

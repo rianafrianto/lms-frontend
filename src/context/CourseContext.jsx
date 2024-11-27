@@ -24,6 +24,7 @@ export const CourseProvider = ({ children }) => {
     const [imageUrl, setImageUrl] = useState(null)
     const [typeModal, setTypeModal] = useState("Create")
     const [dataUnit, setDataUnit] = useState([])
+    const [dataLesson, setDataLesson] = useState([])
     const tokenInStorage = localStorage.getItem("token");
     const navigate = useNavigate()
 
@@ -480,6 +481,29 @@ export const CourseProvider = ({ children }) => {
             setLoading(false);
         }
     };
+
+    const fetchDataLesson = async (id) => {
+        setLoading(true);
+        setError(null);
+        try {
+            const response = await axios.get(API_URL + `/feature/lesson/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${token || tokenInStorage}`,
+                },
+            });
+            if (response.data.success) {
+                setDataLesson(response.data.data);
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: error.response?.data?.message || error.message,
+            });
+        } finally {
+            setLoading(false);
+        }
+    };
       
 
     const handleOpenDetailModal = (record) => {
@@ -498,7 +522,7 @@ export const CourseProvider = ({ children }) => {
         handleOpenDetailModal, handleModalClose, isDetailModal, setIsDetailModal, detailCourse,
         fetchDataCourseUser, dataCourseUser, uploadFile, imageUrl, setImageUrl, submitCourse,
         handleDeleteCourse, typeModal, setTypeModal, updateCourse, fetchDataUnit, dataUnit, setDataUnit,
-        submitUnit, handleDeleteUnit, updateUnit, selectedUnit, setSelectedUnit
+        submitUnit, handleDeleteUnit, updateUnit, selectedUnit, setSelectedUnit, dataLesson, fetchDataLesson
     }
 
 

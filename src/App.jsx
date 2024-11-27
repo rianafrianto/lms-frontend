@@ -7,6 +7,7 @@ import UserDashboardUnit from './pages/UserDashboardUnit';
 import { CourseContext } from './context/CourseContext';
 import { useContext } from 'react';
 import NotFound from './components/NotFound';
+import UserDashboardUnitLesson from './pages/UserDashboardUnitLesson';
 
 const App = () => {
     const { user } = useContext(CourseContext);
@@ -31,6 +32,10 @@ const App = () => {
 
             <Route path="/user-dashboard/unit/:id" element={
                 <UserDashboardUnit />
+            } />
+
+            <Route path="/user-dashboard/unit/:courseId/lesson/:id" element={
+                <UserDashboardUnitLesson />
             } />
 
             {/* Halaman 404 */}
