@@ -24,6 +24,12 @@ const AdminDashboard = () => {
   const [filteredCourses, setFilteredCourses] = useState(dataCourse);
   const [pageSize, setPageSize] = useState(5); // Default to 5 items per page
 
+  useEffect(() => {
+    if (token) {
+      fetchDataCourseAdmin();
+    }
+  }, [token]);
+
   // Update filteredCourses when searchTerm, statusFilter, or dataCourse changes
   useEffect(() => {
     setFilteredCourses(
@@ -141,11 +147,7 @@ const AdminDashboard = () => {
     },
   ];
 
-  useEffect(() => {
-    if (token) {
-      fetchDataCourseAdmin();
-    }
-  }, [token]);
+ 
 
   return (
     <>

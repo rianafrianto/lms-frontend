@@ -9,6 +9,7 @@ const ModalFeedback = () => {
         handleReject,
         feedback,
         setFeedback,
+        loading
     } = useContext(CourseContext);
     return (
         <>
@@ -20,7 +21,7 @@ const ModalFeedback = () => {
                     <Button key="cancel" onClick={() => setIsModalOpen(false)}>
                         Cancel
                     </Button>,
-                    <Button key="submit" type="primary" onClick={handleReject}>
+                    <Button key="submit" type="primary" onClick={handleReject} disabled={loading}>
                         Submit Feedback
                     </Button>,
                 ]}
