@@ -5,9 +5,27 @@ import Swal from 'sweetalert2'
 import { DeleteOutlined, UploadOutlined } from "@ant-design/icons";
 
 const ModalLesson = (props) => {
-    const { visible, onClose } = props
-    const { typeModal, setTypeModal, setSelectedLesson, selectedLesson, loading, uploadFile, imageUrl, setImageUrl } = useContext(CourseContext)
+    const { visible, onClose, id } = props
+    const {
+        typeModal,
+        setTypeModal,
+        setSelectedLesson,
+        selectedLesson,
+        loading,
+        uploadFile,
+        imageUrl,
+        setImageUrl,
+        submitLesson,
+        fetchDataLesson
+    } = useContext(CourseContext)
     const [form] = Form.useForm();
+
+    const handleFormSubmit = async (values) => {
+        typeModal === "Create" ? await submitLesson(values, Number(id)) : null
+        form.resetFields();
+        setImageUrl(null);
+        onClose();
+    }
 
     const handleClose = () => {
         if (typeModal === "Edit") {
@@ -30,7 +48,7 @@ const ModalLesson = (props) => {
                 <Form
                     form={form}
                     layout="vertical"
-                    //   onFinish={handleFormSubmit}
+                    onFinish={handleFormSubmit}
                     initialValues={{
                         title: "",
                         content: "",
@@ -63,8 +81,8 @@ const ModalLesson = (props) => {
                         <Input.TextArea placeholder='Please input the lesson content' />
                     </Form.Item>
 
-                      {/* Cover Image */}
-                      <div style={{ textAlign: 'center' }}>
+                    {/* Cover Image */}
+                    <div style={{ textAlign: 'center' }}>
                         <Form.Item
                             name="media"
                             label="Lesson Media"
