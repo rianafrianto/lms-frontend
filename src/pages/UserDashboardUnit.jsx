@@ -3,11 +3,12 @@ import Navbar from '../components/Navbar'
 import Header from '../components/Header'
 import { Input, Button, Table } from 'antd';
 import { CourseContext } from '../context/CourseContext';
-import { ArrowLeftOutlined, CheckOutlined, DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined, DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
 import { useParams } from 'react-router-dom';
 import ModalUnit from '../components/ModalUnit';
+import Swal from 'sweetalert2';
 const UserDashboardUnit = () => {
-  const { navigate, token, fetchDataUnit, dataUnit } = useContext(CourseContext)
+  const { navigate, token, fetchDataUnit, dataUnit, handleDeleteUnit } = useContext(CourseContext)
   const { id } = useParams();
   const [pageSize, setPageSize] = useState(5);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -19,6 +20,23 @@ const UserDashboardUnit = () => {
       fetchDataUnit(id)
     }
   }, [token])
+
+  const handleDeleteClick = (unitId) => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You won\'t be able to revert this!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        handleDeleteUnit(unitId).then(() => {
+        fetchDataUnit(id)
+        })
+      }
+    });
+  };
 
   const columns = [
     {
@@ -55,20 +73,10 @@ const UserDashboardUnit = () => {
         <div className="flex flex-col sm:flex-row sm:space-x-2 space-y-2 sm:space-y-0 justify-center">
           <Button
             type="primary"
-            icon={<CheckOutlined />}
-            // onClick={() => handleApprove(record.id)}
-            className="mr-2"
-            size="small"
-          >
-            Submit
-          </Button>
-          <Button
-            type="primary"
             icon={<EditOutlined />}
             onClick={() => {
-              // setTypeModal("Edit")
-              // setSelectedCourse(record);
-              // setIsModalVisible(true);
+              console.log(record)
+
             }}
             className="mr-2"
             size="small"
@@ -78,7 +86,7 @@ const UserDashboardUnit = () => {
           <Button
             type="danger"
             icon={<DeleteOutlined />}
-            // onClick={() => handleDeleteClick(record.id)}
+            onClick={() => handleDeleteClick(record?.id)}
             size="small"
           >
             Delete

@@ -417,6 +417,34 @@ export const CourseProvider = ({ children }) => {
             setLoading(false);
         }
     };
+
+    const handleDeleteUnit = async (unitId) => {
+        try {
+          const response = await axios.delete(
+            `${API_URL}/feature/units/delete/${unitId}`,
+            { 
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token || tokenInStorage}`,
+              },
+              data: { deleted_by: user?.id },
+            }
+          );
+          if (response.data.success) {
+            Swal.fire({
+              icon: 'success',
+              title: 'Berhasil',
+              text: response.data.message || 'Unit berhasil dihapus!',
+            });
+          }
+        } catch (error) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Unit gagal dihapus!',
+          });
+        }
+      };
       
 
     const handleOpenDetailModal = (record) => {
@@ -435,7 +463,7 @@ export const CourseProvider = ({ children }) => {
         handleOpenDetailModal, handleModalClose, isDetailModal, setIsDetailModal, detailCourse,
         fetchDataCourseUser, dataCourseUser, uploadFile, imageUrl, setImageUrl, submitCourse,
         handleDeleteCourse, typeModal, setTypeModal, updateCourse, fetchDataUnit, dataUnit, setDataUnit,
-        submitUnit
+        submitUnit, handleDeleteUnit
     }
 
 
