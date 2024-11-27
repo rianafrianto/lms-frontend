@@ -6,6 +6,7 @@ import { ArrowLeftOutlined, DeleteOutlined, EditOutlined, PlusOutlined } from '@
 import { useParams } from 'react-router-dom';
 import { CourseContext } from '../context/CourseContext';
 import ModalLesson from '../components/ModalLesson';
+import Swal from 'sweetalert2';
 
 const UserDashboardUnitLesson = () => {
     const {
@@ -14,8 +15,9 @@ const UserDashboardUnitLesson = () => {
         fetchDataLesson,
         token,
         setTypeModal,
-        setSelectedLesson
-
+        setSelectedLesson,
+        handleDeleteLesson,
+        
     } = useContext(CourseContext)
     const { courseId, id } = useParams();
 
@@ -35,6 +37,23 @@ const UserDashboardUnitLesson = () => {
             fetchDataLesson(id)
         }
     }, [token])
+
+    const handleDeleteClick = (lessonId) => {
+        Swal.fire({
+          title: 'Are you sure?',
+          text: 'You won\'t be able to revert this!',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Yes, delete it!',
+          cancelButtonText: 'Cancel',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            handleDeleteLesson(lessonId).then(() => {
+              fetchDataLesson(id)
+            })
+          }
+        });
+      };
 
     const columns = [
         {
@@ -108,7 +127,7 @@ const UserDashboardUnitLesson = () => {
                     <Button
                         type="danger"
                         icon={<DeleteOutlined />}
-                        // onClick={() => handleDeleteClick(record?.id)}
+                        onClick={() => handleDeleteClick(record?.id)}
                         size="small"
                     >
                         Delete

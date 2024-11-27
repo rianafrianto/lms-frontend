@@ -307,34 +307,34 @@ export const CourseProvider = ({ children }) => {
 
     const handleDeleteCourse = async (courseId) => {
         try {
-          const response = await axios.delete(
-            `${API_URL}/feature/courses/delete/${courseId}`,
-            { 
-              headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${token || tokenInStorage}`,
-              },
-              data: { deleted_by: user?.id },
+            const response = await axios.delete(
+                `${API_URL}/feature/courses/delete/${courseId}`,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token || tokenInStorage}`,
+                    },
+                    data: { deleted_by: user?.id },
+                }
+            );
+            if (response.data.success) {
+                await fetchDataCourseUser();
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil',
+                    text: 'Course berhasil dihapus!',
+                });
             }
-          );
-          if (response.data.success) {
-            await fetchDataCourseUser();
-            Swal.fire({
-              icon: 'success',
-              title: 'Berhasil',
-              text: 'Course berhasil dihapus!',
-            });
-          }
         } catch (error) {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Course gagal dihapus!',
-          });
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Course gagal dihapus!',
+            });
         }
-      };
+    };
 
-      const updateCourse = async (values) => {
+    const updateCourse = async (values) => {
         setLoading(true)
         setError(null)
         try {
@@ -397,8 +397,8 @@ export const CourseProvider = ({ children }) => {
         setLoading(true)
         setError(null)
         try {
-          
-            const response = await axios.post(API_URL + `/feature/courses/${id}`,  { title : values?.title }, {
+
+            const response = await axios.post(API_URL + `/feature/courses/${id}`, { title: values?.title }, {
                 headers: {
                     Authorization: `Bearer ${token || tokenInStorage}`,
                     'Content-Type': 'application/json'
@@ -424,33 +424,33 @@ export const CourseProvider = ({ children }) => {
 
     const handleDeleteUnit = async (unitId) => {
         try {
-          const response = await axios.delete(
-            `${API_URL}/feature/units/delete/${unitId}`,
-            { 
-              headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${token || tokenInStorage}`,
-              },
-              data: { deleted_by: user?.id },
+            const response = await axios.delete(
+                `${API_URL}/feature/units/delete/${unitId}`,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token || tokenInStorage}`,
+                    },
+                    data: { deleted_by: user?.id },
+                }
+            );
+            if (response.data.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil',
+                    text: response.data.message || 'Unit berhasil dihapus!',
+                });
             }
-          );
-          if (response.data.success) {
-            Swal.fire({
-              icon: 'success',
-              title: 'Berhasil',
-              text: response.data.message || 'Unit berhasil dihapus!',
-            });
-          }
         } catch (error) {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Unit gagal dihapus!',
-          });
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Unit gagal dihapus!',
+            });
         }
-      };
+    };
 
-      const updateUnit = async (values) => {
+    const updateUnit = async (values) => {
         setLoading(true)
         setError(null)
         try {
@@ -509,7 +509,7 @@ export const CourseProvider = ({ children }) => {
     const submitLesson = async (values, unitId) => {
         setLoading(true)
         setError(null)
-        
+
         try {
             const { media, ...restValues } = values;
             const courseData = {
@@ -576,7 +576,35 @@ export const CourseProvider = ({ children }) => {
             setLoading(false);
         }
     };
-      
+
+    const handleDeleteLesson = async (lessonId) => {
+        try {
+            const response = await axios.delete(
+                `${API_URL}/feature/lesson/delete/${lessonId}`,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token || tokenInStorage}`,
+                    },
+                    data: { deleted_by: user?.id },
+                }
+            );
+            if (response.data.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil',
+                    text: response.data.message || 'Lesson berhasil dihapus!',
+                });
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Lesson gagal dihapus!',
+            });
+        }
+    };
+
 
     const handleOpenDetailModal = (record) => {
         setIsDetailModal(true);
@@ -595,7 +623,7 @@ export const CourseProvider = ({ children }) => {
         fetchDataCourseUser, dataCourseUser, uploadFile, imageUrl, setImageUrl, submitCourse,
         handleDeleteCourse, typeModal, setTypeModal, updateCourse, fetchDataUnit, dataUnit, setDataUnit,
         submitUnit, handleDeleteUnit, updateUnit, selectedUnit, setSelectedUnit, dataLesson, fetchDataLesson,
-        setSelectedLesson, selectedLesson, submitLesson, updateLesson
+        setSelectedLesson, selectedLesson, submitLesson, updateLesson, handleDeleteLesson
     }
 
 
