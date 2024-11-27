@@ -19,11 +19,12 @@ export const CourseProvider = ({ children }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isDetailModal, setIsDetailModal] = useState(false)
     const [selectedCourse, setSelectedCourse] = useState(null);
+    const [selectedUnit, setSelectedUnit] = useState(null);
     const [feedback, setFeedback] = useState('');
     const [imageUrl, setImageUrl] = useState(null)
     const [typeModal, setTypeModal] = useState("Create")
-    const tokenInStorage = localStorage.getItem("token");
     const [dataUnit, setDataUnit] = useState([])
+    const tokenInStorage = localStorage.getItem("token");
     const navigate = useNavigate()
 
     // login 
@@ -349,6 +350,7 @@ export const CourseProvider = ({ children }) => {
             });
             if (response.data.success) {
                 await fetchDataCourseUser()
+                setTypeModal("Create")
                 Swal.fire({
                     icon: 'success',
                     title: 'Success',
@@ -445,6 +447,39 @@ export const CourseProvider = ({ children }) => {
           });
         }
       };
+
+      const updateUnit = async (values) => {
+        setLoading(true)
+        setError(null)
+        try {
+            const { ...restValues } = values;
+            const courseData = {
+                ...restValues,
+            };
+            const response = await axios.put(API_URL + `/feature/units/${selectedUnit?.id}`, courseData, {
+                headers: {
+                    Authorization: `Bearer ${token || tokenInStorage}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (response.data.success) {
+                setTypeModal("Create")
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: response.data.message,
+                });
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: error.response?.data?.message || error.message
+            });
+        } finally {
+            setLoading(false);
+        }
+    };
       
 
     const handleOpenDetailModal = (record) => {
@@ -463,7 +498,7 @@ export const CourseProvider = ({ children }) => {
         handleOpenDetailModal, handleModalClose, isDetailModal, setIsDetailModal, detailCourse,
         fetchDataCourseUser, dataCourseUser, uploadFile, imageUrl, setImageUrl, submitCourse,
         handleDeleteCourse, typeModal, setTypeModal, updateCourse, fetchDataUnit, dataUnit, setDataUnit,
-        submitUnit, handleDeleteUnit
+        submitUnit, handleDeleteUnit, updateUnit, selectedUnit, setSelectedUnit
     }
 
 

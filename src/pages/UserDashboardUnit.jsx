@@ -8,7 +8,15 @@ import { useParams } from 'react-router-dom';
 import ModalUnit from '../components/ModalUnit';
 import Swal from 'sweetalert2';
 const UserDashboardUnit = () => {
-  const { navigate, token, fetchDataUnit, dataUnit, handleDeleteUnit } = useContext(CourseContext)
+  const {
+    navigate,
+    token,
+    fetchDataUnit,
+    dataUnit,
+    handleDeleteUnit,
+    setSelectedUnit,
+    setTypeModal
+  } = useContext(CourseContext)
   const { id } = useParams();
   const [pageSize, setPageSize] = useState(5);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -32,7 +40,7 @@ const UserDashboardUnit = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         handleDeleteUnit(unitId).then(() => {
-        fetchDataUnit(id)
+          fetchDataUnit(id)
         })
       }
     });
@@ -75,7 +83,9 @@ const UserDashboardUnit = () => {
             type="primary"
             icon={<EditOutlined />}
             onClick={() => {
-              console.log(record)
+              setTypeModal("Edit")
+              setSelectedUnit(record);
+              setIsModalVisible(true);
 
             }}
             className="mr-2"

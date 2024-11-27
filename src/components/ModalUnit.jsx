@@ -1,25 +1,45 @@
 import { Button, Input, Modal, Form } from 'antd'
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { CourseContext } from '../context/CourseContext'
 
 const ModalUnit = (props) => {
-
     const { visible, onClose, id } = props
-    const { submitUnit, fetchDataUnit } = useContext(CourseContext)
+    const { submitUnit, fetchDataUnit, updateUnit, typeModal, setTypeModal, selectedUnit, setSelectedUnit } = useContext(CourseContext)
     const [form] = Form.useForm();
 
     const handleSubmit = async (values) => {
-        await submitUnit(values, Number(id))
-        onClose()
-        await fetchDataUnit(Number(id))
-        form.resetFields()
+      typeModal === "Create" ?  await submitUnit(values, Number(id)) : await updateUnit(values)
+      form.resetFields()
+      await fetchDataUnit(Number(id))
+      onClose()
     }
+
+    useEffect(() => {
+        if (selectedUnit) {
+            form.setFieldsValue({
+                title: selectedUnit?.title,
+            });
+        }
+    }, [selectedUnit, form]);
+
+    const handleClose = () => {
+        if (typeModal === "Edit") {
+            setTypeModal("Create");
+            form.resetFields();
+            setSelectedUnit(null)
+            onClose()
+        } else {
+            onClose();
+        }
+    }
+
+
     return (
         <>
             <Modal
-                title={<span className="font-bold text-lg">Create Unit For This Course</span>}
+                title={`${typeModal && `${typeModal} Unit`}`}
                 visible={visible}
-                onCancel={onClose}
+                onCancel={handleClose}
                 footer={null}
             >
                 <Form
