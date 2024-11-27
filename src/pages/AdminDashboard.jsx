@@ -60,7 +60,7 @@ const AdminDashboard = () => {
       dataIndex: 'title',
       key: 'name',
       render: (text) => (
-        <span className="font-semibold text-gray-700">{text}</span>
+        <span className="capitalize font-semibold text-gray-700">{text}</span>
       ),
     },
     {
@@ -68,7 +68,7 @@ const AdminDashboard = () => {
       dataIndex: 'category',
       key: 'category',
       render: (text) => (
-        <span className="font-semibold text-gray-700">{text}</span>
+        <span className="capitalize font-semibold text-gray-700">{text}</span>
       ),
     },
     {
@@ -76,7 +76,7 @@ const AdminDashboard = () => {
       dataIndex: 'created_name',
       key: 'created_name',
       render: (text) => (
-        <span className="text-sm font-medium text-gray-600">{text}</span>
+        <span className="capitalize text-sm font-medium text-gray-600">{text}</span>
       ),
     },
     {
