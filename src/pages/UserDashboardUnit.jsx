@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import Header from '../components/Header'
-import { Input, Button, Table } from 'antd';
+import { Input, Button, Table, Spin } from 'antd';
 import { CourseContext } from '../context/CourseContext';
 import { ArrowLeftOutlined, DeleteOutlined, EditOutlined, PlusOutlined, SearchOutlined } from '@ant-design/icons';
 import { useParams } from 'react-router-dom';
@@ -16,7 +16,8 @@ const UserDashboardUnit = () => {
     dataUnit,
     handleDeleteUnit,
     setSelectedUnit,
-    setTypeModal
+    setTypeModal,
+    loading
   } = useContext(CourseContext)
   const { id } = useParams();
   const [pageSize, setPageSize] = useState(5);
@@ -112,6 +113,14 @@ const UserDashboardUnit = () => {
       ),
     },
   ];
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <Spin size="large" />
+      </div>
+    )
+  }
 
   return (
     <>

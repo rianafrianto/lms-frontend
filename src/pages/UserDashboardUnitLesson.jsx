@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import Header from '../components/Header'
-import { Button, Image, Input, Table } from 'antd'
+import { Button, Image, Input, Spin, Table } from 'antd'
 import { ArrowLeftOutlined, DeleteOutlined, EditOutlined, PlusOutlined, SearchOutlined  } from '@ant-design/icons';
 import { useParams } from 'react-router-dom';
 import { CourseContext } from '../context/CourseContext';
@@ -17,7 +17,7 @@ const UserDashboardUnitLesson = () => {
         setTypeModal,
         setSelectedLesson,
         handleDeleteLesson,
-        
+        loading
     } = useContext(CourseContext)
     const { courseId, id } = useParams();
 
@@ -136,6 +136,14 @@ const UserDashboardUnitLesson = () => {
             ),
         },
     ];
+
+    if (loading) {
+        return (
+          <div className="flex justify-center items-center min-h-screen">
+            <Spin size="large" />
+          </div>
+        )
+      }
 
 
     return (

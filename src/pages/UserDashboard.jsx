@@ -1,10 +1,10 @@
 import { useState, useContext, useEffect } from 'react';
-import { Button, Input, Form, Table, message, Select, Tag } from 'antd';
+import { Button, Input, Table, Select, Tag, Spin } from 'antd';
 import Swal from 'sweetalert2';
 import { CourseContext } from '../context/CourseContext';
 import Navbar from '../components/Navbar';
 import Header from '../components/Header';
-import { CheckOutlined, CloseOutlined, DeleteOutlined, EditOutlined, EyeOutlined, PlusOutlined, SearchOutlined } from '@ant-design/icons';
+import { CheckOutlined, DeleteOutlined, EditOutlined, EyeOutlined, PlusOutlined, SearchOutlined } from '@ant-design/icons';
 import CourseModal from '../components/CourseModal';
 import ModalDetail from '../components/ModalDetail';
 
@@ -18,7 +18,8 @@ const UserDashboard = () => {
     setTypeModal,
     handleOpenDetailModal,
     navigate,
-    handleUpdateCourse
+    handleUpdateCourse,
+    loading
   } = useContext(CourseContext);
     
   const [pageSize, setPageSize] = useState(5);
@@ -189,6 +190,14 @@ const UserDashboard = () => {
       ),
     },
   ];
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <Spin size="large" />
+      </div>
+    )
+  }
 
   return (
     <>
