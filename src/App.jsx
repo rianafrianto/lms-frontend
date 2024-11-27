@@ -8,6 +8,7 @@ import { CourseContext } from './context/CourseContext';
 import { useContext } from 'react';
 import NotFound from './components/NotFound';
 import UserDashboardUnitLesson from './pages/UserDashboardUnitLesson';
+import LandingPage from './pages/LandingPage';
 
 const App = () => {
     const { user } = useContext(CourseContext);
@@ -37,6 +38,9 @@ const App = () => {
             <Route path="/user-dashboard/unit/:courseId/lesson/:id" element={
                 <UserDashboardUnitLesson />
             } />
+
+            {/* Landing Page */}
+            <Route path="/" element={<LandingPage />} />
 
             {/* Halaman 404 */}
             <Route path="*" element={<NotFound />} />
