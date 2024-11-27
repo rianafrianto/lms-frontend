@@ -1,5 +1,5 @@
 import { Button, Input, Modal, Form, Upload, Spin, Image } from 'antd'
-import React, { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { CourseContext } from '../context/CourseContext'
 import Swal from 'sweetalert2'
 import { DeleteOutlined, UploadOutlined } from "@ant-design/icons";
@@ -16,12 +16,13 @@ const ModalLesson = (props) => {
         imageUrl,
         setImageUrl,
         submitLesson,
+        updateLesson,
         fetchDataLesson
     } = useContext(CourseContext)
     const [form] = Form.useForm();
 
     const handleFormSubmit = async (values) => {
-        typeModal === "Create" ? await submitLesson(values, Number(id)) : null
+        typeModal === "Create" ? await submitLesson(values, Number(id)) : await updateLesson(values, Number(id))
         form.resetFields();
         setImageUrl(null);
         onClose();
@@ -37,6 +38,18 @@ const ModalLesson = (props) => {
             onClose();
         }
     }
+
+    useEffect(() => {
+        if (selectedLesson) {
+            form.setFieldsValue({
+                title: selectedLesson?.title,
+                content: selectedLesson?.content,
+                media: selectedLesson.mediaUrl,
+            });
+            setImageUrl(selectedLesson.mediaUrl);
+        }
+    }, [selectedLesson, form, setImageUrl]);
+
     return (
         <>
             <Modal
@@ -139,9 +152,10 @@ const ModalLesson = (props) => {
                                                         position: 'absolute',
                                                         top: 10,
                                                         right: 10,
+                                                        color:"red",
                                                         fontSize: '24px',
                                                         cursor: 'pointer',
-                                                        zIndex: 1,
+                                                        zIndex: 10,
                                                     }}
                                                 />
                                             </>

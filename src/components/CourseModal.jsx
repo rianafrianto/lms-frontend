@@ -166,6 +166,7 @@ const CourseModal = (props) => {
                                                         position: 'absolute',
                                                         top: 10,
                                                         right: 10,
+                                                        color:"red",
                                                         fontSize: '24px',
                                                         cursor: 'pointer',
                                                         zIndex: 1,

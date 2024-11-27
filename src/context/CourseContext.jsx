@@ -541,6 +541,41 @@ export const CourseProvider = ({ children }) => {
             setLoading(false);
         }
     };
+
+    const updateLesson = async (values, unitId) => {
+        setLoading(true)
+        setError(null)
+        try {
+            const { media, ...restValues } = values;
+            const courseData = {
+                ...restValues,
+                mediaUrl: imageUrl
+            };
+            const response = await axios.put(API_URL + `/feature/lesson/${selectedLesson?.id}`, courseData, {
+                headers: {
+                    Authorization: `Bearer ${token || tokenInStorage}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (response.data.success) {
+                await fetchDataLesson(unitId)
+                setTypeModal("Create")
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: response.data.message,
+                });
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: error.response?.data?.message || error.message
+            });
+        } finally {
+            setLoading(false);
+        }
+    };
       
 
     const handleOpenDetailModal = (record) => {
@@ -560,7 +595,7 @@ export const CourseProvider = ({ children }) => {
         fetchDataCourseUser, dataCourseUser, uploadFile, imageUrl, setImageUrl, submitCourse,
         handleDeleteCourse, typeModal, setTypeModal, updateCourse, fetchDataUnit, dataUnit, setDataUnit,
         submitUnit, handleDeleteUnit, updateUnit, selectedUnit, setSelectedUnit, dataLesson, fetchDataLesson,
-        setSelectedLesson, selectedLesson, submitLesson
+        setSelectedLesson, selectedLesson, submitLesson, updateLesson
     }
 
 

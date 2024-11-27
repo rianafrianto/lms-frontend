@@ -8,7 +8,15 @@ import { CourseContext } from '../context/CourseContext';
 import ModalLesson from '../components/ModalLesson';
 
 const UserDashboardUnitLesson = () => {
-    const { navigate, dataLesson, fetchDataLesson, token } = useContext(CourseContext)
+    const {
+        navigate,
+        dataLesson,
+        fetchDataLesson,
+        token,
+        setTypeModal,
+        setSelectedLesson
+
+    } = useContext(CourseContext)
     const { courseId, id } = useParams();
 
     const [pageSize, setPageSize] = useState(5);
@@ -16,6 +24,11 @@ const UserDashboardUnitLesson = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const showModal = () => setIsModalVisible(true);
     const closeModal = () => setIsModalVisible(false);
+
+    // Filter the data based on the search term
+    const filteredData = dataLesson.filter(lesson =>
+        lesson.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
     useEffect(() => {
         if (token) {
@@ -44,7 +57,7 @@ const UserDashboardUnitLesson = () => {
             title: 'Media',
             dataIndex: 'mediaUrl',
             key: 'mediaUrl',
-            align:"center",
+            align: "center",
             render: (mediaUrl) => {
                 if (!mediaUrl) return 'Tidak ada media';
 
@@ -71,37 +84,37 @@ const UserDashboardUnitLesson = () => {
             },
         },
 
-     
-    
+
+
         {
-          title: 'Action',
-          key: 'action',
-          align: 'center',
-          render: (text, record) => (
-            <div className="flex flex-col sm:flex-row sm:space-x-2 space-y-2 sm:space-y-0 justify-center">
-              <Button
-                type="primary"
-                icon={<EditOutlined />}
-                onClick={() => {
-                //   setTypeModal("Edit");
-                //   setSelectedUnit(record);
-                //   setIsModalVisible(true);
-                }}
-                className="mr-2"
-                size="small"
-              >
-                Edit
-              </Button>
-              <Button
-                type="danger"
-                icon={<DeleteOutlined />}
-                // onClick={() => handleDeleteClick(record?.id)}
-                size="small"
-              >
-                Delete
-              </Button>
-            </div>
-          ),
+            title: 'Action',
+            key: 'action',
+            align: 'center',
+            render: (text, record) => (
+                <div className="flex flex-col sm:flex-row sm:space-x-2 space-y-2 sm:space-y-0 justify-center">
+                    <Button
+                        type="primary"
+                        icon={<EditOutlined />}
+                        onClick={() => {
+                            setTypeModal("Edit");
+                            setSelectedLesson(record);
+                            setIsModalVisible(true);
+                        }}
+                        className="mr-2"
+                        size="small"
+                    >
+                        Edit
+                    </Button>
+                    <Button
+                        type="danger"
+                        icon={<DeleteOutlined />}
+                        // onClick={() => handleDeleteClick(record?.id)}
+                        size="small"
+                    >
+                        Delete
+                    </Button>
+                </div>
+            ),
         },
     ];
 
@@ -124,8 +137,8 @@ const UserDashboardUnitLesson = () => {
                             </Button>
                             <Input
                                 placeholder="Search Lesson Name"
-                                // value={searchTerm}
-                                // onChange={(e) => setSearchTerm(e.target.value)}
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
                                 className="w-full sm:w-auto lg:w-auto"
                                 allowClear
                             />
@@ -143,7 +156,7 @@ const UserDashboardUnitLesson = () => {
                     <div className="overflow-x-auto">
                         <Table
                             columns={columns}
-                            dataSource={dataLesson}
+                            dataSource={filteredData}
                             rowKey="id"
                             className="shadow-md rounded-lg overflow-hidden"
                             pagination={{
