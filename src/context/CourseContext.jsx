@@ -116,10 +116,10 @@ export const CourseProvider = ({ children }) => {
         }
     };
 
-    const handleApprove = async (courseId) => {
+    const handleUpdateCourse = async (courseId, status) => {
         try {
             const response = await axios.post(
-                `${API_URL}/feature/courses/${courseId}/approved`,
+                `${API_URL}/feature/courses/${courseId}/${status}`,
                 {},
                 {
                     headers: {
@@ -128,17 +128,19 @@ export const CourseProvider = ({ children }) => {
                     },
                 }
             );
-            Swal.fire({
-                icon: 'success',
-                title: 'Success',
-                text: response.data.message || 'Course berhasil disetujui.',
-            });
-            fetchDataCourseAdmin();
+            if (response.data.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: response.data.message || 'Course berhasil disetujui.',
+                });
+            }
         } catch (error) {
+            console.log(error)
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: 'Course gagal disetujui!',
+                text: error.response.data.message || 'Course gagal disetujui!',
             });
         }
     };
@@ -617,7 +619,7 @@ export const CourseProvider = ({ children }) => {
 
     const value = {
         authForm, Button, Form, Input, Select, login, navigate, user, setUser, register,
-        loading, error, dataCourse, fetchDataCourseAdmin, token, handleApprove, isModalOpen,
+        loading, error, dataCourse, fetchDataCourseAdmin, token, handleUpdateCourse, isModalOpen,
         setIsModalOpen, selectedCourse, setSelectedCourse, feedback, setFeedback, handleReject,
         handleOpenDetailModal, handleModalClose, isDetailModal, setIsDetailModal, detailCourse,
         fetchDataCourseUser, dataCourseUser, uploadFile, imageUrl, setImageUrl, submitCourse,

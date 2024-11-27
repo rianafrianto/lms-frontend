@@ -14,7 +14,7 @@ const AdminDashboard = () => {
     fetchDataCourseAdmin,
     setIsModalOpen,
     token,
-    handleApprove,
+    handleUpdateCourse,
     setSelectedCourse,
     handleOpenDetailModal,
   } = useContext(CourseContext);
@@ -47,7 +47,9 @@ const AdminDashboard = () => {
       cancelButtonText: 'Cancel',
     }).then((result) => {
       if (result.isConfirmed) {
-        handleApprove(id);
+        handleUpdateCourse(id, "approved").then(()=>{
+          fetchDataCourseAdmin()
+        })
       }
     });
   };

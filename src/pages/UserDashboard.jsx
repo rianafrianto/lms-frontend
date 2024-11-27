@@ -17,7 +17,8 @@ const UserDashboard = () => {
     setSelectedCourse, 
     setTypeModal,
     handleOpenDetailModal,
-    navigate
+    navigate,
+    handleUpdateCourse
   } = useContext(CourseContext);
     
   const [pageSize, setPageSize] = useState(5);
@@ -56,7 +57,26 @@ const UserDashboard = () => {
       cancelButtonText: 'Cancel',
     }).then((result) => {
       if (result.isConfirmed) {
-        handleDeleteCourse(id);
+        handleDeleteCourse(id).then(()=>{
+          fetchDataCourseUser()
+        })
+      }
+    });
+  };
+
+  const handleSubmitCourse = (id) => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You won\'t be able to submit this!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, submit it!',
+      cancelButtonText: 'Cancel',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        handleUpdateCourse(id, "pending").then(()=>{
+          fetchDataCourseUser()
+        })
       }
     });
   };
@@ -137,7 +157,7 @@ const UserDashboard = () => {
           <Button
             type="primary"
             icon={<CheckOutlined />}
-            // onClick={() => handleApprove(record.id)}
+            onClick={() => handleSubmitCourse(record?.id)}
             className="mr-2"
             size="small"
           >
