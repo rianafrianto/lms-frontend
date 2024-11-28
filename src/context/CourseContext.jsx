@@ -64,6 +64,11 @@ export const CourseProvider = ({ children }) => {
         try {
             const response = await axios.post(API_URL + "/auth/register", values);
             if (response.data.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: response.data.message,
+                });
                 navigate('/login');
             }
         } catch (error) {
@@ -243,9 +248,6 @@ export const CourseProvider = ({ children }) => {
         const formData = new FormData();
         formData.append('coverImage', file);
 
-        setLoading(true);
-        setError(null);
-
         try {
             const response = await axios.post(`${API_URL}/s3/upload-cover-image`, formData, {
                 headers: {
@@ -267,9 +269,7 @@ export const CourseProvider = ({ children }) => {
                 title: 'Error',
                 text: error.response?.data?.message || error.message,
             });
-        } finally {
-            setLoading(false);
-        }
+        } 
     };
 
     const submitCourse = async (values) => {

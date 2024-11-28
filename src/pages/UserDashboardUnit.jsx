@@ -106,6 +106,7 @@ const UserDashboardUnit = () => {
             icon={<DeleteOutlined />}
             onClick={() => handleDeleteClick(record?.id)}
             size="small"
+            disabled={dataUnit.length === 1} style={{ cursor: dataUnit.length === 1 ? 'not-allowed' : 'pointer' }}
           >
             Delete
           </Button>
