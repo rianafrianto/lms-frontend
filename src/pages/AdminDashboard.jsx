@@ -140,7 +140,7 @@ const AdminDashboard = () => {
               setIsModalOpen(true);
             }}
             size="small"
-            disabled={record?.status === "approved"}
+            disabled={record?.status === "approved"} style={{ cursor: record?.status === "approved" ? 'not-allowed' : 'pointer' }}
           >
             Tolak
           </Button>

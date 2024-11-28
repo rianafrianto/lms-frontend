@@ -139,6 +139,7 @@ export const CourseProvider = ({ children }) => {
                     title: 'Success',
                     text: response.data.message || 'Course berhasil disetujui.',
                 });
+                setImageUrl(null)
             }
         } catch (error) {
             console.log(error)
