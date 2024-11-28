@@ -175,7 +175,6 @@ const UserDashboard = () => {
             }}
             className="mr-2"
             size="small"
-            disabled={record?.status === "approved"}
           >
             Edit
           </Button>
