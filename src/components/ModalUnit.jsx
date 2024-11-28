@@ -3,9 +3,9 @@ import { useContext, useEffect } from 'react'
 import { CourseContext } from '../context/CourseContext'
 
 const ModalUnit = (props) => {
-    const { visible, onClose, id } = props
+    const { visible, onClose, id, form } = props
     const { submitUnit, fetchDataUnit, updateUnit, typeModal, setTypeModal, selectedUnit, setSelectedUnit, loading } = useContext(CourseContext)
-    const [form] = Form.useForm();
+    // const [form] = Form.useForm();
 
     const handleSubmit = async (values) => {
       typeModal === "Create" ?  await submitUnit(values, Number(id)) : await updateUnit(values)

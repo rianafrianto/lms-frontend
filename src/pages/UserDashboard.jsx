@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from 'react';
-import { Button, Input, Table, Select, Tag, Spin } from 'antd';
+import { Button, Input, Table, Select, Tag, Spin, Form } from 'antd';
 import Swal from 'sweetalert2';
 import { CourseContext } from '../context/CourseContext';
 import Navbar from '../components/Navbar';
@@ -19,7 +19,9 @@ const UserDashboard = () => {
     handleOpenDetailModal,
     navigate,
     handleUpdateCourse,
-    loading
+    loading,
+    tokenInStorage,
+    setImageUrl
   } = useContext(CourseContext);
     
   const [pageSize, setPageSize] = useState(5);
@@ -29,10 +31,11 @@ const UserDashboard = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const showModal = () => setIsModalVisible(true);
   const closeModal = () => setIsModalVisible(false);
+  const [form] = Form.useForm();
 
   useEffect(() => {
     setFilteredCourses(
-      dataCourseUser.filter(course => {
+      dataCourseUser?.filter(course => {
         const matchesStatus = statusFilter
           ? course.status === statusFilter
           : true;
@@ -43,7 +46,7 @@ const UserDashboard = () => {
   }, [searchTerm, statusFilter, dataCourseUser]);
 
   useEffect(() => {
-    if (token) {
+    if (tokenInStorage || token) {
       fetchDataCourseUser()
     }
   }, [token])
@@ -59,6 +62,8 @@ const UserDashboard = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         handleDeleteCourse(id).then(()=>{
+          form.resetFields();
+          setImageUrl(null)
           fetchDataCourseUser()
         })
       }
@@ -76,6 +81,8 @@ const UserDashboard = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         handleUpdateCourse(id, "pending").then(()=>{
+          form.resetFields();
+          setImageUrl(null)
           fetchDataCourseUser()
         })
       }
@@ -253,7 +260,7 @@ const UserDashboard = () => {
           </div>
         </div>
       </div>
-      <CourseModal visible={isModalVisible} onClose={closeModal} />
+      <CourseModal visible={isModalVisible} onClose={closeModal} form={form} />
       <ModalDetail />
     </>
 

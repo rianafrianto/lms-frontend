@@ -15,11 +15,11 @@ const CourseModal = (props) => {
         selectedCourse,
         updateCourse,
         setTypeModal,
-        setSelectedCourse
+        setSelectedCourse,
     } = useContext(CourseContext);
 
-    const { visible, onClose } = props;
-    const [form] = Form.useForm();
+    const { visible, onClose, form } = props;
+    // const [form] = Form.useForm();
 
     useEffect(() => {
         // Autofill the form with selectedCourse data when the modal is opened

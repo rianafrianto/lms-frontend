@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import Header from '../components/Header'
-import { Input, Button, Table, Spin } from 'antd';
+import { Input, Button, Table, Spin, Form } from 'antd';
 import { CourseContext } from '../context/CourseContext';
 import { ArrowLeftOutlined, DeleteOutlined, EditOutlined, PlusOutlined, SearchOutlined } from '@ant-design/icons';
 import { useParams } from 'react-router-dom';
@@ -17,7 +17,8 @@ const UserDashboardUnit = () => {
     handleDeleteUnit,
     setSelectedUnit,
     setTypeModal,
-    loading
+    loading,
+    tokenInStorage
   } = useContext(CourseContext)
   const { id } = useParams();
   const [pageSize, setPageSize] = useState(5);
@@ -25,15 +26,16 @@ const UserDashboardUnit = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const showModal = () => setIsModalVisible(true);
   const closeModal = () => setIsModalVisible(false);
+  const [form] = Form.useForm();
 
   useEffect(() => {
-    if (token) {
+    if (tokenInStorage || token) {
       fetchDataUnit(id)
     }
   }, [token]);
 
   // Filter the data based on the search term
-  const filteredData = dataUnit.filter(unit =>
+  const filteredData = dataUnit?.filter(unit =>
     unit.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -48,6 +50,7 @@ const UserDashboardUnit = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         handleDeleteUnit(unitId).then(() => {
+          form.resetFields();
           fetchDataUnit(id)
         })
       }
@@ -174,7 +177,7 @@ const UserDashboardUnit = () => {
           </div>
         </div>
       </div>
-      <ModalUnit visible={isModalVisible} onClose={closeModal} id={id} />
+      <ModalUnit visible={isModalVisible} onClose={closeModal} id={id} form={form} />
     </>
   )
 }

@@ -134,12 +134,15 @@ export const CourseProvider = ({ children }) => {
                 }
             );
             if (response.data.success) {
+                setImageUrl(null)
+                setSelectedCourse(null)
+                setSelectedUnit(null)
+                setDataLesson(null)
                 Swal.fire({
                     icon: 'success',
                     title: 'Success',
                     text: response.data.message || 'Course berhasil disetujui.',
                 });
-                setImageUrl(null)
             }
         } catch (error) {
             console.log(error)
@@ -180,6 +183,10 @@ export const CourseProvider = ({ children }) => {
             setFeedback("")
             fetchDataCourseAdmin();
             setIsModalOpen(false);
+            setImageUrl(null)
+            setSelectedCourse(null)
+            setSelectedUnit(null)
+            setDataLesson(null)
         } catch (error) {
             Swal.fire({
                 icon: 'error',
@@ -291,6 +298,10 @@ export const CourseProvider = ({ children }) => {
             });
             if (response.data.success) {
                 await fetchDataCourseUser()
+                setSelectedCourse(null)
+                setSelectedUnit(null)
+                setDataLesson(null)
+                setImageUrl(null)
                 Swal.fire({
                     icon: 'success',
                     title: 'Success',
@@ -322,6 +333,10 @@ export const CourseProvider = ({ children }) => {
             );
             if (response.data.success) {
                 await fetchDataCourseUser();
+                setImageUrl(null)
+                setSelectedCourse(null)
+                setSelectedUnit(null)
+                setDataLesson(null)
                 Swal.fire({
                     icon: 'success',
                     title: 'Berhasil',
@@ -356,6 +371,10 @@ export const CourseProvider = ({ children }) => {
             if (response.data.success) {
                 await fetchDataCourseUser()
                 setTypeModal("Create")
+                setImageUrl(null)
+                setSelectedCourse(null)
+                setSelectedUnit(null)
+                setDataLesson(null)
                 Swal.fire({
                     icon: 'success',
                     title: 'Success',
@@ -408,6 +427,10 @@ export const CourseProvider = ({ children }) => {
                 }
             });
             if (response.data.success) {
+                setImageUrl(null)
+                setSelectedCourse(null)
+                setSelectedUnit(null)
+                setDataLesson(null)
                 Swal.fire({
                     icon: 'success',
                     title: 'Success',
@@ -438,6 +461,10 @@ export const CourseProvider = ({ children }) => {
                 }
             );
             if (response.data.success) {
+                setImageUrl(null)
+                setSelectedCourse(null)
+                setSelectedUnit(null)
+                setDataLesson(null)
                 Swal.fire({
                     icon: 'success',
                     title: 'Berhasil',
@@ -469,6 +496,9 @@ export const CourseProvider = ({ children }) => {
             });
             if (response.data.success) {
                 setTypeModal("Create")
+                setSelectedCourse(null)
+                setSelectedUnit(null)
+                setDataLesson(null)
                 Swal.fire({
                     icon: 'success',
                     title: 'Success',
@@ -528,6 +558,10 @@ export const CourseProvider = ({ children }) => {
             });
             if (response.data.success) {
                 await fetchDataLesson(unitId)
+                setImageUrl(null)
+                setSelectedCourse(null)
+                setSelectedUnit(null)
+                setDataLesson(null)
                 Swal.fire({
                     icon: 'success',
                     title: 'Success',
@@ -563,6 +597,10 @@ export const CourseProvider = ({ children }) => {
             if (response.data.success) {
                 await fetchDataLesson(unitId)
                 setTypeModal("Create")
+                setImageUrl(null)
+                setSelectedCourse(null)
+                setSelectedUnit(null)
+                setDataLesson(null)
                 Swal.fire({
                     icon: 'success',
                     title: 'Success',
@@ -593,6 +631,10 @@ export const CourseProvider = ({ children }) => {
                 }
             );
             if (response.data.success) {
+                setImageUrl(null)
+                setSelectedCourse(null)
+                setSelectedUnit(null)
+                setDataLesson(null)
                 Swal.fire({
                     icon: 'success',
                     title: 'Berhasil',
@@ -626,7 +668,7 @@ export const CourseProvider = ({ children }) => {
         fetchDataCourseUser, dataCourseUser, uploadFile, imageUrl, setImageUrl, submitCourse,
         handleDeleteCourse, typeModal, setTypeModal, updateCourse, fetchDataUnit, dataUnit, setDataUnit,
         submitUnit, handleDeleteUnit, updateUnit, selectedUnit, setSelectedUnit, dataLesson, fetchDataLesson,
-        setSelectedLesson, selectedLesson, submitLesson, updateLesson, handleDeleteLesson
+        setSelectedLesson, selectedLesson, submitLesson, updateLesson, handleDeleteLesson, tokenInStorage
     }
 
 

@@ -5,7 +5,7 @@ import Swal from 'sweetalert2'
 import { DeleteOutlined, UploadOutlined } from "@ant-design/icons";
 
 const ModalLesson = (props) => {
-    const { visible, onClose, id } = props
+    const { visible, onClose, id, form } = props
     const {
         typeModal,
         setTypeModal,
@@ -17,12 +17,13 @@ const ModalLesson = (props) => {
         setImageUrl,
         submitLesson,
         updateLesson,
-        fetchDataLesson
+        fetchDataLesson,
     } = useContext(CourseContext)
-    const [form] = Form.useForm();
+    // const [form] = Form.useForm();
 
     const handleFormSubmit = async (values) => {
         typeModal === "Create" ? await submitLesson(values, Number(id)) : await updateLesson(values, Number(id))
+        await fetchDataLesson(id)
         form.resetFields();
         setImageUrl(null);
         onClose();

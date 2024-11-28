@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import Header from '../components/Header'
-import { Button, Image, Input, Spin, Table } from 'antd'
+import { Button, Form, Image, Input, Spin, Table } from 'antd'
 import { ArrowLeftOutlined, DeleteOutlined, EditOutlined, PlusOutlined, SearchOutlined  } from '@ant-design/icons';
 import { useParams } from 'react-router-dom';
 import { CourseContext } from '../context/CourseContext';
@@ -17,7 +17,9 @@ const UserDashboardUnitLesson = () => {
         setTypeModal,
         setSelectedLesson,
         handleDeleteLesson,
-        loading
+        loading,
+        tokenInStorage,
+        setImageUrl
     } = useContext(CourseContext)
     const { courseId, id } = useParams();
 
@@ -26,14 +28,15 @@ const UserDashboardUnitLesson = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const showModal = () => setIsModalVisible(true);
     const closeModal = () => setIsModalVisible(false);
+    const [form] = Form.useForm();
 
     // Filter the data based on the search term
-    const filteredData = dataLesson.filter(lesson =>
+    const filteredData = dataLesson?.filter(lesson =>
         lesson.title.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     useEffect(() => {
-        if (token) {
+        if (tokenInStorage || token ) {
             fetchDataLesson(id)
         }
     }, [token])
@@ -49,7 +52,9 @@ const UserDashboardUnitLesson = () => {
         }).then((result) => {
           if (result.isConfirmed) {
             handleDeleteLesson(lessonId).then(() => {
+              form.resetFields();
               fetchDataLesson(id)
+              setImageUrl(null)
             })
           }
         });
@@ -102,9 +107,6 @@ const UserDashboardUnitLesson = () => {
                 }
             },
         },
-
-
-
         {
             title: 'Action',
             key: 'action',
@@ -198,7 +200,7 @@ const UserDashboardUnitLesson = () => {
                     </div>
                 </div>
             </div>
-            <ModalLesson visible={isModalVisible} onClose={closeModal} id={id} />
+            <ModalLesson visible={isModalVisible} onClose={closeModal} id={id} form={form} />
         </>
     )
 }
