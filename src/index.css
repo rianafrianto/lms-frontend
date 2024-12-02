@@ -8,3 +8,11 @@
     color: #ff4d4f;
     margin-bottom: 16px;
 }
+
+.custom-quill .ql-container {
+    border-radius: 0px 0px 10px 10px
+}
+
+.custom-quill .ql-toolbar {
+    border-radius: 10px 10px 0px 0px
+}

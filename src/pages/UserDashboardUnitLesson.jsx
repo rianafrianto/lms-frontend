@@ -74,39 +74,74 @@ const UserDashboardUnitLesson = () => {
             dataIndex: 'content',
             key: 'content',
             render: (text) => (
+                <span
+                className="font-semibold text-gray-700"
+                dangerouslySetInnerHTML={{ __html: text }}
+            />
+            ),
+        },
+        {
+            title: 'Sub Lesson',
+            dataIndex: 'sub_lesson',
+            key: 'sub_lesson',
+            render: (text) => (
                 <span className="font-semibold text-gray-700">{text}</span>
             ),
         },
         {
-            title: 'Media',
-            dataIndex: 'mediaUrl',
-            key: 'mediaUrl',
-            align: "center",
-            render: (mediaUrl) => {
-                if (!mediaUrl) return 'Tidak ada media';
-
-                // Cek tipe file dan render sesuai dengan jenisnya
-                const fileExtension = mediaUrl.split('.').pop().toLowerCase();
-                if (fileExtension === 'jpg' || fileExtension === 'jpeg' || fileExtension === 'png' || fileExtension === 'gif') {
-                    // Tampilkan gambar
-                    return <Image src={mediaUrl} alt="Media" style={{ width: '100px', height: 'auto' }} />;
-                } else if (fileExtension === 'mp4' || fileExtension === 'webm' || fileExtension === 'ogg') {
-                    // Tampilkan video
-                    return (
-                        <video width="100" height="auto" controls>
-                            <source src={mediaUrl} type={`video/${fileExtension}`} />
-                            Your browser does not support the video tag.
-                        </video>
-                    );
-                } else if (fileExtension === 'pdf') {
-                    // Tampilkan PDF sebagai link untuk diunduh
-                    return <a href={mediaUrl} target="_blank" rel="noopener noreferrer">Download PDF</a>;
-                } else {
-                    // Tampilkan link untuk tipe media lainnya
-                    return <a href={mediaUrl} target="_blank" rel="noopener noreferrer">Open Media</a>;
-                }
-            },
+            title: 'Value',
+            dataIndex: 'value',
+            key: 'value',
+            render: (text) => (
+                <span className="font-semibold text-gray-700">{text}</span>
+            ),
         },
+        {
+            title: 'Content-Type',
+            dataIndex: 'content_type',
+            key: 'content_type',
+            render: (text) => (
+                <span className="font-semibold text-gray-700">{text}</span>
+            ),
+        },
+        {
+            title: 'Position',
+            dataIndex: 'position',
+            key: 'position',
+            render: (text) => (
+                <span className="font-semibold text-gray-700">{text}</span>
+            ),
+        },
+        // {
+        //     title: 'Media',
+        //     dataIndex: 'mediaUrl',
+        //     key: 'mediaUrl',
+        //     align: "center",
+        //     render: (mediaUrl) => {
+        //         if (!mediaUrl) return 'Tidak ada media';
+
+        //         // Cek tipe file dan render sesuai dengan jenisnya
+        //         const fileExtension = mediaUrl.split('.').pop().toLowerCase();
+        //         if (fileExtension === 'jpg' || fileExtension === 'jpeg' || fileExtension === 'png' || fileExtension === 'gif') {
+        //             // Tampilkan gambar
+        //             return <Image src={mediaUrl} alt="Media" style={{ width: '100px', height: 'auto' }} />;
+        //         } else if (fileExtension === 'mp4' || fileExtension === 'webm' || fileExtension === 'ogg') {
+        //             // Tampilkan video
+        //             return (
+        //                 <video width="100" height="auto" controls>
+        //                     <source src={mediaUrl} type={`video/${fileExtension}`} />
+        //                     Your browser does not support the video tag.
+        //                 </video>
+        //             );
+        //         } else if (fileExtension === 'pdf') {
+        //             // Tampilkan PDF sebagai link untuk diunduh
+        //             return <a href={mediaUrl} target="_blank" rel="noopener noreferrer">Download PDF</a>;
+        //         } else {
+        //             // Tampilkan link untuk tipe media lainnya
+        //             return <a href={mediaUrl} target="_blank" rel="noopener noreferrer">Open Media</a>;
+        //         }
+        //     },
+        // },
         {
             title: 'Action',
             key: 'action',

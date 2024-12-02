@@ -27,6 +27,7 @@ export const CourseProvider = ({ children }) => {
     const [dataLesson, setDataLesson] = useState([])
     const [selectedLesson, setSelectedLesson] = useState(null);
     const tokenInStorage = localStorage.getItem("token");
+    const [loadingUpload, setLoadingUpload] = useState(false);
     const navigate = useNavigate()
 
     // login 
@@ -253,6 +254,9 @@ export const CourseProvider = ({ children }) => {
             return;
         }
 
+        setLoadingUpload(true);
+        setError(null);
+
         const formData = new FormData();
         formData.append('coverImage', file);
 
@@ -277,7 +281,9 @@ export const CourseProvider = ({ children }) => {
                 title: 'Error',
                 text: error.response?.data?.message || error.message,
             });
-        } 
+        } finally {
+            setLoadingUpload(false);
+        }
     };
 
     const submitCourse = async (values) => {
@@ -542,12 +548,11 @@ export const CourseProvider = ({ children }) => {
     const submitLesson = async (values, unitId) => {
         setLoading(true)
         setError(null)
-
+        const { media, media_pdf, content_url, ...restValues } = values;
         try {
-            const { media, ...restValues } = values;
             const courseData = {
                 ...restValues,
-                mediaUrl: imageUrl
+                mediaUrl: imageUrl || content_url || null
             };
 
             const response = await axios.post(API_URL + `/feature/units/${unitId}`, courseData, {
@@ -668,7 +673,8 @@ export const CourseProvider = ({ children }) => {
         fetchDataCourseUser, dataCourseUser, uploadFile, imageUrl, setImageUrl, submitCourse,
         handleDeleteCourse, typeModal, setTypeModal, updateCourse, fetchDataUnit, dataUnit, setDataUnit,
         submitUnit, handleDeleteUnit, updateUnit, selectedUnit, setSelectedUnit, dataLesson, fetchDataLesson,
-        setSelectedLesson, selectedLesson, submitLesson, updateLesson, handleDeleteLesson, tokenInStorage
+        setSelectedLesson, selectedLesson, submitLesson, updateLesson, handleDeleteLesson, tokenInStorage,
+        loadingUpload, setLoadingUpload
     }
 
 
