@@ -262,7 +262,7 @@ const ModalLesson = (props) => {
 
                     {selectedContentType === 'pdf' && (
                         <Form.Item
-                            name="media_pdf"
+                            name="media"
                             label="Upload PDF"
                             rules={[{ required: true, message: "Please upload a PDF file" }]}
                         >
