@@ -38,8 +38,12 @@ const ModalDetail = () => {
 
                     {/* Course Title */}
                     <div>
-                        <Typography.Paragraph>Title: {detailCourse.title}</Typography.Paragraph>
-                        <Typography.Paragraph>Description: {detailCourse.description}</Typography.Paragraph>
+                        <Typography.Paragraph>Course Name: {detailCourse.title}</Typography.Paragraph>
+                        {/* <Typography.Paragraph>Content Information: {detailCourse.description}</Typography.Paragraph> */}
+                        <Typography.Paragraph> Course Information :
+                            <div dangerouslySetInnerHTML={{ __html: detailCourse.description }} />
+                        </Typography.Paragraph>
+
                         <Typography.Paragraph className='capitalize'>Category: {detailCourse.category}</Typography.Paragraph>
                     </div>
 
@@ -120,6 +124,12 @@ const ModalDetail = () => {
                                                             title: 'Content',
                                                             dataIndex: 'content',
                                                             key: 'content',
+                                                            render: (text) => (
+                                                                <span
+                                                                    className="font-semibold text-gray-700"
+                                                                    dangerouslySetInnerHTML={{ __html: text }}
+                                                                />
+                                                            ),
                                                         },
                                                         {
                                                             title: 'Media',
@@ -127,7 +137,7 @@ const ModalDetail = () => {
                                                             align: "center",
                                                             key: 'mediaUrl',
                                                             render: (mediaUrl) => {
-                                                                if (!mediaUrl) return 'Tidak ada media';
+                                                                if (!mediaUrl) return 'Media does not exist!';
 
                                                                 // Cek tipe file dan render sesuai dengan jenisnya
                                                                 const fileExtension = mediaUrl.split('.').pop().toLowerCase();

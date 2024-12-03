@@ -20,13 +20,16 @@ const ModalLesson = (props) => {
         submitLesson,
         updateLesson,
         fetchDataLesson,
-        loadingUpload
+        loadingUpload,
+        typeSubLesson,
+        setSelectedSubLesson,
+        selectedSubLesson
     } = useContext(CourseContext)
     // const [form] = Form.useForm();
     const [selectedContentType, setSelectedContentType] = useState(null);
 
     const handleFormSubmit = async (values) => {
-        typeModal === "Create" ? await submitLesson(values, Number(id)) : await updateLesson(values, Number(id))
+        typeModal === "Create" ? await submitLesson(values, Number(id), Number(selectedLesson?.id)) : await updateLesson(values, Number(id))
         await fetchDataLesson(id)
         form.resetFields();
         setImageUrl(null);
@@ -46,26 +49,39 @@ const ModalLesson = (props) => {
     }
 
     useEffect(() => {
-        if (selectedLesson) {
+        if (!typeSubLesson && selectedLesson) {
             form.setFieldsValue({
                 title: selectedLesson?.title,
                 content: selectedLesson?.content,
                 media: selectedLesson.mediaUrl,
+                content_type: selectedLesson.content_type,
+                value: selectedLesson.value,
+                position: selectedLesson.position,
             });
             setImageUrl(selectedLesson.mediaUrl);
+        } else if (typeSubLesson && selectedSubLesson) {
+            form.setFieldsValue({
+                title: selectedSubLesson?.title,
+                content: selectedSubLesson?.content,
+                media: selectedSubLesson.mediaUrl,
+                content_type: selectedSubLesson.content_type,
+                value: selectedSubLesson.value,
+                position: selectedSubLesson.position,
+            });
+            setImageUrl(selectedSubLesson.mediaUrl);
         }
-    }, [selectedLesson, form, setImageUrl]);
+    }, [selectedLesson, form, setImageUrl, selectedSubLesson]);
 
     const disabledButtonSubmit = 
     (selectedContentType === 'video' || selectedContentType === 'image' || selectedContentType === 'pdf') 
         ? loadingUpload 
         : loading;
 
-
+    const title = typeSubLesson ? " Sub Lesson" : " Lesson"
     return (
         <>
             <Modal
-                title={`${typeModal && `${typeModal} Lesson`}`}
+                title={typeModal + title}
                 visible={visible}
                 onCancel={handleClose}
                 footer={null}
@@ -84,7 +100,7 @@ const ModalLesson = (props) => {
 
                 >
                     <Form.Item
-                        label="Lesson Name"
+                        label={title + " Name"}
                         name="title"
                         rules={[
                             {

@@ -28,6 +28,9 @@ export const CourseProvider = ({ children }) => {
     const [selectedLesson, setSelectedLesson] = useState(null);
     const tokenInStorage = localStorage.getItem("token");
     const [loadingUpload, setLoadingUpload] = useState(false);
+    const [typeSubLesson, setTypeSubLesson] = useState(false)
+    const [dataSubLesson, setDataSubLesson] = useState([])
+    const [selectedSubLesson, setSelectedSubLesson] = useState(null);
     const navigate = useNavigate()
 
     // login 
@@ -545,17 +548,17 @@ export const CourseProvider = ({ children }) => {
         }
     };
 
-    const submitLesson = async (values, unitId) => {
+    const submitLesson = async (values, unitId, lessonId) => {
         setLoading(true)
         setError(null)
         const { media, media_pdf, content_url, ...restValues } = values;
+        const courseData = {
+            ...restValues,
+            mediaUrl: imageUrl || content_url || null
+        };
+        const url = typeSubLesson ? `/feature/sublesson/${lessonId}` : `/feature/units/${unitId}`
         try {
-            const courseData = {
-                ...restValues,
-                mediaUrl: imageUrl || content_url || null
-            };
-
-            const response = await axios.post(API_URL + `/feature/units/${unitId}`, courseData, {
+            const response = await axios.post(API_URL + url, courseData, {
                 headers: {
                     Authorization: `Bearer ${token || tokenInStorage}`,
                     'Content-Type': 'application/json'
@@ -563,6 +566,7 @@ export const CourseProvider = ({ children }) => {
             });
             if (response.data.success) {
                 await fetchDataLesson(unitId)
+                await fetchDataSubLesson()
                 setImageUrl(null)
                 setSelectedCourse(null)
                 setSelectedUnit(null)
@@ -623,10 +627,11 @@ export const CourseProvider = ({ children }) => {
         }
     };
 
-    const handleDeleteLesson = async (lessonId) => {
+    const handleDeleteLesson = async (id) => {
+        const url = `/feature/lesson/delete/${id}`
         try {
             const response = await axios.delete(
-                `${API_URL}/feature/lesson/delete/${lessonId}`,
+                API_URL + url,
                 {
                     headers: {
                         'Content-Type': 'application/json',
@@ -639,7 +644,71 @@ export const CourseProvider = ({ children }) => {
                 setImageUrl(null)
                 setSelectedCourse(null)
                 setSelectedUnit(null)
+                setSelectedLesson(null)
+                setSelectedSubLesson(null)
                 setDataLesson(null)
+                fetchDataSubLesson()
+                setTypeSubLesson(false)
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil',
+                    text: response.data.message || 'Lesson berhasil dihapus!',
+                });
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Lesson gagal dihapus!',
+            });
+        }
+    };
+
+    const fetchDataSubLesson = async () => {
+        setLoading(true);
+        setError(null);
+        try {
+            const response = await axios.get(API_URL + "/feature/sublesson", {
+                headers: {
+                    Authorization: `Bearer ${token || tokenInStorage}`,
+                },
+            });
+            if (response.data.success) {
+                setDataSubLesson(response.data.data);
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: error.response?.data?.message || error.message,
+            });
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleDeleteSubLesson = async (id) => {
+        const url = `/feature/sublesson/delete/${id}`
+        try {
+            const response = await axios.delete(
+                API_URL + url,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token || tokenInStorage}`,
+                    },
+                    data: { deleted_by: user?.id },
+                }
+            );
+            if (response.data.success) {
+                setImageUrl(null)
+                setSelectedCourse(null)
+                setSelectedUnit(null)
+                setSelectedLesson(null)
+                setSelectedSubLesson(null)
+                setDataLesson(null)
+                fetchDataSubLesson()
+                setTypeSubLesson(false)
                 Swal.fire({
                     icon: 'success',
                     title: 'Berhasil',
@@ -674,7 +743,8 @@ export const CourseProvider = ({ children }) => {
         handleDeleteCourse, typeModal, setTypeModal, updateCourse, fetchDataUnit, dataUnit, setDataUnit,
         submitUnit, handleDeleteUnit, updateUnit, selectedUnit, setSelectedUnit, dataLesson, fetchDataLesson,
         setSelectedLesson, selectedLesson, submitLesson, updateLesson, handleDeleteLesson, tokenInStorage,
-        loadingUpload, setLoadingUpload
+        loadingUpload, setLoadingUpload, typeSubLesson, setTypeSubLesson, fetchDataSubLesson, dataSubLesson,
+        selectedSubLesson, setSelectedSubLesson, handleDeleteSubLesson
     }
 
 

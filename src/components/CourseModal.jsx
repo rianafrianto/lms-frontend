@@ -3,6 +3,8 @@ import { Modal, Button, Input, Select, Form, Upload, Spin, Image } from "antd";
 import { DeleteOutlined, UploadOutlined } from "@ant-design/icons";
 import { CourseContext } from "../context/CourseContext";
 import Swal from "sweetalert2";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 const CourseModal = (props) => {
     const {
@@ -76,19 +78,25 @@ const CourseModal = (props) => {
                     {/* Title */}
                     <Form.Item
                         name="title"
-                        label="Title"
-                        rules={[{ required: true, message: "Please enter the course title" }]}
+                        label="Course Name"
+                        rules={[{ required: true, message: "Please enter the course name" }]}
                     >
-                        <Input placeholder="Enter course title" />
+                        <Input placeholder="Enter course name" />
                     </Form.Item>
 
                     {/* Description */}
                     <Form.Item
                         name="description"
-                        label="Description"
-                        rules={[{ required: true, message: "Please enter the course description" }]}
+                        label="Content Information"
+                        rules={[{ required: true, message: "Please enter the course Content Information" }]}
+                        getValueFromEvent={(value) => value}
                     >
-                        <Input.TextArea placeholder="Enter course description" rows={4} />
+                        {/* <Input.TextArea placeholder="Enter course Content Information" rows={4} /> */}
+                        <ReactQuill
+                            theme="snow"
+                            placeholder="Please input the lesson content"
+                            className="custom-quill"
+                        />
                     </Form.Item>
 
                     {/* Category */}
@@ -111,8 +119,8 @@ const CourseModal = (props) => {
                     <div style={{ textAlign: 'center' }}>
                         <Form.Item
                             name="image"
-                            label="Cover Image"
-                            rules={[{ required: true, message: "Please upload a cover image" }]}
+                            label="Thumbnail"
+                            rules={[{ required: true, message: "Please upload a Thumbnail" }]}
                             style={{ width: '100%' }}
                         >
                             {/* Upload Component */}
@@ -139,7 +147,7 @@ const CourseModal = (props) => {
                                     disabled={loading}
                                     style={{ width: '100%' }}
                                 >
-                                    {loading ? 'Uploading...' : 'Upload Cover Image'}
+                                    {loading ? 'Uploading...' : 'Upload Thumbnail'}
                                 </Button>
                             </Upload>
 
