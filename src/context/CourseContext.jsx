@@ -588,16 +588,17 @@ export const CourseProvider = ({ children }) => {
         }
     };
 
-    const updateLesson = async (values, unitId) => {
+    const updateLesson = async (values, unitId, lessonId) => {
         setLoading(true)
         setError(null)
+        const { media, media_pdf, content_url, ...restValues } = values;
+        const courseData = {
+            ...restValues,
+            mediaUrl: imageUrl || content_url || null
+        };
+        const url = typeSubLesson ? `/feature/sublesson/${lessonId}` : `/feature/lesson/${selectedLesson?.id}`
         try {
-            const { media, ...restValues } = values;
-            const courseData = {
-                ...restValues,
-                mediaUrl: imageUrl
-            };
-            const response = await axios.put(API_URL + `/feature/lesson/${selectedLesson?.id}`, courseData, {
+            const response = await axios.put(API_URL + url, courseData, {
                 headers: {
                     Authorization: `Bearer ${token || tokenInStorage}`,
                     'Content-Type': 'application/json'
@@ -605,9 +606,12 @@ export const CourseProvider = ({ children }) => {
             });
             if (response.data.success) {
                 await fetchDataLesson(unitId)
+                await fetchDataSubLesson()
                 setTypeModal("Create")
                 setImageUrl(null)
                 setSelectedCourse(null)
+                setSelectedLesson(null)
+                setSelectedSubLesson(null)
                 setSelectedUnit(null)
                 setDataLesson(null)
                 Swal.fire({

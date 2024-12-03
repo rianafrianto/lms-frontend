@@ -5,6 +5,7 @@ import Swal from 'sweetalert2'
 import { DeleteOutlined, UploadOutlined } from "@ant-design/icons";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import MediaDisplay from './MediaDisplay';
 
 const ModalLesson = (props) => {
     const { visible, onClose, id, form } = props
@@ -25,15 +26,17 @@ const ModalLesson = (props) => {
         setSelectedSubLesson,
         selectedSubLesson
     } = useContext(CourseContext)
-    // const [form] = Form.useForm();
+
     const [selectedContentType, setSelectedContentType] = useState(null);
 
     const handleFormSubmit = async (values) => {
-        typeModal === "Create" ? await submitLesson(values, Number(id), Number(selectedLesson?.id)) : await updateLesson(values, Number(id))
+        typeModal === "Create" ? await submitLesson(values, Number(id), Number(selectedLesson?.id)) : await updateLesson(values, Number(id), Number(selectedSubLesson?.id))
         await fetchDataLesson(id)
         form.resetFields();
         setImageUrl(null);
-        onClose();
+        setSelectedContentType(null)
+        // onClose()
+        handleClose();
     }
 
     const handleClose = () => {
@@ -41,41 +44,52 @@ const ModalLesson = (props) => {
             setTypeModal("Create");
             form.resetFields();
             setSelectedLesson(null)
+            setSelectedSubLesson(null)
             setImageUrl(null)
+            setSelectedContentType(null)
             onClose()
         } else {
             onClose();
+            setSelectedContentType(null)
         }
     }
 
     useEffect(() => {
+        const urlLesson = selectedLesson?.content_type === "h5p" ||  selectedLesson?.content_type === "url" ||  selectedLesson?.content_type === "gwc"
+        const urlSubLesson = selectedSubLesson?.content_type === "h5p" ||  selectedSubLesson?.content_type === "url" ||  selectedSubLesson?.content_type === "gwc"
         if (!typeSubLesson && selectedLesson) {
             form.setFieldsValue({
                 title: selectedLesson?.title,
                 content: selectedLesson?.content,
-                media: selectedLesson.mediaUrl,
-                content_type: selectedLesson.content_type,
-                value: selectedLesson.value,
-                position: selectedLesson.position,
+                media: selectedLesson?.mediaUrl || imageUrl,
+                content_type: selectedLesson?.content_type,
+                value: selectedLesson?.value,
+                position: selectedLesson?.position,
+                game_type : selectedLesson?.game_type,
+                content_url : urlLesson ? selectedLesson?.mediaUrl : null
             });
-            setImageUrl(selectedLesson.mediaUrl);
+            setImageUrl(selectedLesson?.mediaUrl);
+            setSelectedContentType(selectedLesson?.content_type);
         } else if (typeSubLesson && selectedSubLesson) {
             form.setFieldsValue({
                 title: selectedSubLesson?.title,
                 content: selectedSubLesson?.content,
-                media: selectedSubLesson.mediaUrl,
-                content_type: selectedSubLesson.content_type,
-                value: selectedSubLesson.value,
-                position: selectedSubLesson.position,
+                media: selectedSubLesson?.mediaUrl || imageUrl,
+                content_type: selectedSubLesson?.content_type,
+                value: selectedSubLesson?.value,
+                position: selectedSubLesson?.position,
+                game_type : selectedSubLesson?.game_type,
+                content_url : urlSubLesson ? selectedSubLesson?.mediaUrl : null
             });
-            setImageUrl(selectedSubLesson.mediaUrl);
+            setSelectedContentType(selectedSubLesson?.content_type);
+            setImageUrl(selectedSubLesson?.mediaUrl);
         }
-    }, [selectedLesson, form, setImageUrl, selectedSubLesson]);
+    }, [selectedLesson, form, setImageUrl, selectedSubLesson, setSelectedContentType]);
 
-    const disabledButtonSubmit = 
-    (selectedContentType === 'video' || selectedContentType === 'image' || selectedContentType === 'pdf') 
-        ? loadingUpload 
-        : loading;
+    const disabledButtonSubmit =
+        (selectedContentType === 'video' || selectedContentType === 'image' || selectedContentType === 'pdf')
+            ? loadingUpload
+            : loading;
 
     const title = typeSubLesson ? " Sub Lesson" : " Lesson"
     return (
@@ -149,7 +163,7 @@ const ModalLesson = (props) => {
 
                     {selectedContentType === 'video' && (
                         <Form.Item
-                            name="video"
+                            name="media"
                             label="Upload Video"
                             rules={[{ required: true, message: "Please upload a video file" }]}
                         >
@@ -180,9 +194,18 @@ const ModalLesson = (props) => {
                         </Form.Item>
                     )}
 
+                    {
+                        <MediaDisplay
+                            mediaType="video"
+                            mediaUrl={imageUrl}
+                            selectedSubLesson={selectedSubLesson}
+                            selectedLesson={selectedLesson}
+                            setMediaUrl={setImageUrl} />
+                    }
+
                     {selectedContentType === 'image' && (
                         <Form.Item
-                            name="image"
+                            name="media"
                             label="Upload Image"
                             rules={[{ required: true, message: "Please upload an image file" }]}
                         >
@@ -212,6 +235,15 @@ const ModalLesson = (props) => {
                             </Upload>
                         </Form.Item>
                     )}
+                    
+                    {
+                        <MediaDisplay
+                            mediaType="image"
+                            mediaUrl={imageUrl}
+                            selectedSubLesson={selectedSubLesson}
+                            selectedLesson={selectedLesson}
+                            setMediaUrl={setImageUrl} />
+                    }
 
                     {selectedContentType === 'h5p' && (
                         <Form.Item
@@ -254,6 +286,16 @@ const ModalLesson = (props) => {
                             </Upload>
                         </Form.Item>
                     )}
+
+                    {
+                        <MediaDisplay
+                        mediaType="pdf"
+                        mediaUrl={imageUrl}
+                        selectedSubLesson={selectedSubLesson}
+                        selectedLesson={selectedLesson}
+                        setMediaUrl={setImageUrl}
+                      />
+                    }
 
                     {selectedContentType === 'url' && (
                         <Form.Item
@@ -356,78 +398,10 @@ const ModalLesson = (props) => {
                             className="custom-quill"
                         />
                     </Form.Item>
-
-                    {/* Cover Image */}
-                    {/* <div style={{ textAlign: 'center' }}>
-                        <Form.Item
-                            name="media"
-                            label="Lesson Media"
-                            rules={[{ required: true, message: "Please upload a lesson media" }]}
-                        >
-                            <Upload
-                                accept="image/*"
-                                listType="text"
-                                beforeUpload={(file) => {
-                                    const isImage = ['image/jpeg', 'image/png', 'image/jpg'].includes(file.type);
-                                    if (!isImage) {
-                                        Swal.fire({
-                                            icon: 'error',
-                                            title: 'Invalid File Type',
-                                            text: 'Only JPG, JPEG, and PNG files are allowed.',
-                                        });
-                                        return false;
-                                    }
-                                    uploadFile(file);
-                                    return false;
-                                }}
-                                style={{ width: '100%' }}
-                            >
-                                <Button
-                                    icon={<UploadOutlined />}
-                                    disabled={loading}
-                                    style={{ width: '100%' }}
-                                >
-                                    {loading ? 'Uploading...' : 'Upload Cover Image'}
-                                </Button>
-                            </Upload>
-
-                            {loading && <Spin style={{ marginTop: 16 }} />}
-
-                            {imageUrl && (
-                                <div style={{ marginTop: 16, textAlign: 'center' }}>
-                                    <div style={{ position: 'relative', width: '100%' }}>
-                                        {imageUrl && (
-                                            <>
-                                                <Image
-                                                    src={imageUrl}
-                                                    alt="Uploaded Cover"
-                                                    width="100%"
-                                                    height="70%"
-                                                    style={{ borderRadius: 8 }}
-                                                    preview={true}
-                                                />
-                                                <DeleteOutlined
-                                                    onClick={() => setImageUrl(null)}
-                                                    style={{
-                                                        position: 'absolute',
-                                                        top: 10,
-                                                        right: 10,
-                                                        color: "red",
-                                                        fontSize: '24px',
-                                                        cursor: 'pointer',
-                                                        zIndex: 10,
-                                                    }}
-                                                />
-                                            </>
-                                        )}
-                                    </div>
-                                </div>
-                            )}
-                        </Form.Item>
-                    </div> */}
+                   
                     <Form.Item>
-                        <Button type="primary" htmlType="submit" className='w-full' 
-                        disabled={disabledButtonSubmit}
+                        <Button type="primary" htmlType="submit" className='w-full'
+                            disabled={disabledButtonSubmit}
                         >
                             Submit
                         </Button>
