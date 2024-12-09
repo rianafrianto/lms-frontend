@@ -23,7 +23,7 @@ const CoursePlay = () => {
     };
 
     const renderContent = (lesson) => {
-        
+
         const { content_type, mediaUrl, title } = lesson;
         switch (content_type) {
             case "pdf":
@@ -66,7 +66,17 @@ const CoursePlay = () => {
                             backgroundColor: '#f8f9fa',
                         }}
                     >
-                        <div style={{ width: '80%', height: '90%', textAlign: 'center' }}>
+                        <div
+                            style={{
+                                width: '100%',
+                                height: '100%',
+                                textAlign: 'center',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                            }}
+                        >
                             <h3 style={{ marginBottom: '16px' }}>{title}</h3>
                             <img
                                 src={mediaUrl}
