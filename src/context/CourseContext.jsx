@@ -748,7 +748,7 @@ export const CourseProvider = ({ children }) => {
         submitUnit, handleDeleteUnit, updateUnit, selectedUnit, setSelectedUnit, dataLesson, fetchDataLesson,
         setSelectedLesson, selectedLesson, submitLesson, updateLesson, handleDeleteLesson, tokenInStorage,
         loadingUpload, setLoadingUpload, typeSubLesson, setTypeSubLesson, fetchDataSubLesson, dataSubLesson,
-        selectedSubLesson, setSelectedSubLesson, handleDeleteSubLesson
+        selectedSubLesson, setSelectedSubLesson, handleDeleteSubLesson, fetchDetailCourse
     }
 
 

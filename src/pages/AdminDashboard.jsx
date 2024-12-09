@@ -17,6 +17,7 @@ const AdminDashboard = () => {
     handleUpdateCourse,
     setSelectedCourse,
     handleOpenDetailModal,
+    navigate
   } = useContext(CourseContext);
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -112,6 +113,24 @@ const AdminDashboard = () => {
             className="text-gray-600"
           >
             Detail
+          </Button>
+        </div>
+      ),
+    },
+    {
+      title: 'Preview Course',
+      key: 'preview',
+      align: 'center',
+      render: (_, record) => (
+        <div className="flex justify-center">
+         <Button
+            type="link"
+            icon={<EyeOutlined />}
+            onClick={() => navigate(`/admin-dashboard/detail/${record?.id}`)}
+            className="text-gray-600"
+            size="small"
+          >
+            Preview
           </Button>
         </div>
       ),

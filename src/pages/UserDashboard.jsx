@@ -140,6 +140,24 @@ const UserDashboard = () => {
       ),
     },
     {
+      title: 'Preview Course',
+      key: 'preview',
+      align: 'center',
+      render: (_, record) => (
+        <div className="flex justify-center">
+         <Button
+            type="link"
+            icon={<EyeOutlined />}
+            onClick={() => navigate(`/user-dashboard/detail/${record?.id}`)}
+            className="text-gray-600"
+            size="small"
+          >
+            Preview
+          </Button>
+        </div>
+      ),
+    },
+    {
       title: 'Unit',
       key: 'unit',
       align: 'center',

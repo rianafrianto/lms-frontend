@@ -9,6 +9,8 @@ import LandingPage from './pages/LandingPage';
 import NotFound from './components/NotFound';
 import { CourseContext } from './context/CourseContext';
 import { useContext, useEffect, useState } from 'react';
+import CourseDetailPage from './pages/CourseDetailPage';
+import CoursePlay from './pages/CoursePlay';
 
 const App = () => {
     const { user } = useContext(CourseContext);
@@ -58,7 +60,12 @@ const App = () => {
 
             {/* Protected routes for authenticated users */}
             {isAuthenticated && user?.role === 'admin' && (
-                <Route path="/admin-dashboard" element={<AdminDashboard />} />
+                <>
+                    <Route path="/admin-dashboard" element={<AdminDashboard />} />
+                    <Route path="/admin-dashboard/detail/:id" element={<CourseDetailPage />} />
+                    <Route path="/admin-dashboard/detail/play/:id" element={<CoursePlay />} />
+                </>
+
             )}
 
             {isAuthenticated && user?.role === 'user' && (
@@ -66,6 +73,8 @@ const App = () => {
                     <Route path="/user-dashboard" element={<UserDashboard />} />
                     <Route path="/user-dashboard/unit/:id" element={<UserDashboardUnit />} />
                     <Route path="/user-dashboard/unit/:courseId/lesson/:id" element={<UserDashboardUnitLesson />} />
+                    <Route path="/user-dashboard/detail/:id" element={<CourseDetailPage />} />
+                    <Route path="/user-dashboard/detail/play/:id" element={<CoursePlay />} />
                 </>
             )}
 
