@@ -95,7 +95,7 @@ const AuthForm = (props) => {
                 <img
                     src={assets.backgroundAuth}
                     alt="Learning Illustration"
-                    className="w-full h-auto"
+                    className="w-full h-full object-cover"
                 />
             </div>
         </div>
